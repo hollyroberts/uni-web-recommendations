@@ -9,7 +9,7 @@ def index():
     if 'user' not in session:
         return redirect('user.html')
 
-    return render_template('index.html')
+    return render_template('index.html', session=session)
 
 @app.route('/user.html')
 def new_user():
