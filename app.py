@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, session, render_template, url_for, redirect
 
 app = Flask(__name__)
 
@@ -6,6 +6,9 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/index.html')
 def index():
+    if 'user' not in session:
+        return redirect('user.html')
+
     return render_template('index.html')
 
 @app.route('/user.html')
