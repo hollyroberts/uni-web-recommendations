@@ -14,7 +14,6 @@ def get_db():
 
     return g.db
 
-
 def close_db(e=None):
     db = g.pop('db', None)
 
@@ -40,9 +39,6 @@ def new_user():
     return render_template('user.html')
 
 if __name__ == '__main__':
-    print(init_db())
-    print("HELLO")
-
-    app.add_url_rule('/favicon.ico',
-                     redirect_to=url_for('static', filename='favicon.ico'))
+    #app.add_url_rule('/favicon.ico',
+    #                 redirect_to=url_for('static', filename='favicon.ico'))
     app.run()
