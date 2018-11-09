@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="71c12794-7015-4918-bed6-9facbb4d3da2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/convert_db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/User.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/convert_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/convert_db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,7 +17,7 @@
     <SUITE FILE_PATH="coverage/Movie_Recommendations$Movie_Recommendations.coverage" NAME="Movie Recommendations Coverage Results" MODIFIED="1541180201291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Movie_Recommendations$app.coverage" NAME="app Coverage Results" MODIFIED="1541776846268" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Movie_Recommendations$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1541776765097" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/Movie_Recommendations$convert_db.coverage" NAME="convert_db Coverage Results" MODIFIED="1541783226614" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Movie_Recommendations$convert_db.coverage" NAME="convert_db Coverage Results" MODIFIED="1541785917504" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -50,14 +48,14 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="html" value="479" />
-          <entry key="py" value="1137" />
+          <entry key="py" value="2076" />
           <entry key="sql" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="479" />
-          <entry key="Python" value="1137" />
+          <entry key="Python" value="2076" />
           <entry key="SQL" value="8" />
         </counts>
       </usages-collector>
@@ -99,10 +97,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/convert_db.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="66" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="66" />
+            <state relative-caret-position="595">
+              <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
               <folding>
-                <element signature="e#74#88#0" expanded="true" />
+                <element signature="e#78#92#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -155,6 +153,15 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>Int</find>
+      <find>no genres</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>INTEGER</replace>
+    </replaceStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -193,6 +200,11 @@
             <path>
               <item name="Movie Recommendations" type="b2602c69:ProjectViewProjectNode" />
               <item name="Movie Recommendations" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Movie Recommendations" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Movie Recommendations" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Movie Recommendations" type="b2602c69:ProjectViewProjectNode" />
@@ -405,10 +417,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/convert_db.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="66" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="66" />
+        <state relative-caret-position="595">
+          <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
           <folding>
-            <element signature="e#74#88#0" expanded="true" />
+            <element signature="e#78#92#0" expanded="true" />
           </folding>
         </state>
       </provider>
