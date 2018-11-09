@@ -1,8 +1,15 @@
 import sqlite3
 
+import pandas
 from flask import Flask, session, render_template, url_for, redirect, g, current_app
 
 app = Flask(__name__)
+
+print("Loading movies")
+csv_movies = pandas.read_csv("data/movies.csv")
+print("Loading ratings")
+csv_ratings = pandas.read_csv("data/ratings.csv")
+print("CSV files loaded")
 
 def get_db():
     if 'db' not in g:
@@ -39,6 +46,4 @@ def new_user():
     return render_template('user.html')
 
 if __name__ == '__main__':
-    #app.add_url_rule('/favicon.ico',
-    #                 redirect_to=url_for('static', filename='favicon.ico'))
     app.run()
