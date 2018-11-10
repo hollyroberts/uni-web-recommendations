@@ -7,9 +7,9 @@
     <body>
     <h1>Create account</h1>
 
-    <form>
+    <form action="/create_user" method="post">
         <label for="usernameLabel">Username:</label>
-        <input class="form-control" id="usernameInput" placeholder="Enter username" required>
+        <input class="form-control" name="username" placeholder="Enter username" required>
         <button type="submit" class="btn btn-primary" style="margin-top: 10px">Create Profile</button>
     </form>
     </body>

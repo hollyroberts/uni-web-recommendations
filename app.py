@@ -1,7 +1,6 @@
 import sqlite3
-
 import pandas
-from flask import Flask, session, render_template, url_for, redirect, g, current_app
+from flask import Flask, session, render_template, url_for, redirect, g, current_app, request
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -23,9 +22,15 @@ def index():
 def user_page():
     return render_template('user.html')
 
-@app.route('/add_user', methods=['POST'])
+@app.route('/create_user', methods=['POST'])
 def add_user():
-    pass
+    username = request.form['username']
+
+    with sqlite3.connect("database.db") as db:
+        db.execute("INSERT INTO users (name, from_mvl) values (?, ?)", (username, False))
+        db.commit()
+
+    return redirect('user.html')
 
 if __name__ == '__main__':
     # Todo init db
