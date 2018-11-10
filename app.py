@@ -1,4 +1,3 @@
-import sqlite3
 import pandas
 from flask import Flask, session, render_template, url_for, redirect, g, current_app, request
 
@@ -12,6 +11,9 @@ csv_movies = pandas.read_csv("data/movies.csv")
 # csv_ratings = pandas.read_csv("data/ratings.csv")
 print("CSV files loaded")
 
+users = Database.get_users()
+print(users)
+
 @app.route('/')
 @app.route('/index.html')
 def index():
@@ -22,7 +24,7 @@ def index():
 
 @app.route('/user.html')
 def user_page():
-    return render_template('user.html')
+    return render_template('user.html', users=users)
 
 @app.route('/create_user', methods=['POST'])
 def add_user():

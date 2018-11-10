@@ -5,6 +5,18 @@
         <title>Create user account</title>
     </head>
     <body>
+    {% if users|length > 1 %}
+    <h1>Select account</h1>
+
+    <label>User account:   </label>
+    <select class="form-control">
+    {% for user in users %}
+        <option value = "{{ user[0] }}">{{ user[1] }}</option>
+    {% endfor %}
+    </select>
+    {% endif %}
+
+
     <h1>Create account</h1>
 
     <form action="/create_user" method="post">

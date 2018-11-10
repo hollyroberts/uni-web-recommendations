@@ -14,3 +14,9 @@ class Database:
             db.commit()
 
             return cursor.lastrowid
+
+    @classmethod
+    def get_users(cls):
+        with sqlite3.connect(cls.DATABASE) as db:
+            users = db.execute("SELECT * FROM users WHERE NOT from_mvl").fetchall()
+            return users
