@@ -2,6 +2,8 @@ import sqlite3
 import pandas
 from flask import Flask, session, render_template, url_for, redirect, g, current_app, request
 
+from db import Database
+
 app = Flask(__name__, static_url_path='/static')
 
 print("Loading movies")
@@ -25,13 +27,16 @@ def user_page():
 @app.route('/create_user', methods=['POST'])
 def add_user():
     username = request.form['username']
+    user_id = Database.add_user(username)
 
-    with sqlite3.connect("database.db") as db:
-        db.execute("INSERT INTO users (name, from_mvl) values (?, ?)", (username, False))
-        db.commit()
+    session['user'] = {
+        "id": user_id,
+        "name": username
+    }
 
-    return redirect('user.html')
+    return redirect('index.html')
 
 if __name__ == '__main__':
-    # Todo init db
+    app.secret_key = 'Movies'
+    app.config['SESSION_TYPE'] = 'filesystem'
     app.run()
