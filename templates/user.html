@@ -9,7 +9,8 @@
     <h1>Select account</h1>
 
     <label>User account:   </label>
-    <select class="form-control">
+    <select class="form-control" onchange="alert(this.options[this.selectedIndex].innerHTML);" onfocus="this.selected = 'Choose user'">
+    <option value="" selected disabled hidden>Choose user</option>
     {% for user in users %}
         <option value = "{{ user[0] }}">{{ user[1] }}</option>
     {% endfor %}
