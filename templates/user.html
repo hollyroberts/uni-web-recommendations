@@ -2,25 +2,25 @@
 
 {% block container %}
     <head>
-        <title>Create user account</title>
+        <title>Change user account</title>
     </head>
     <body>
     {% if users|length > 1 %}
         <h1>Select account</h1>
 
         <form action="/select_user" method="post">
-        <label>User account: </label>
-        <select class="form-control" onchange="this.form.submit();" onfocus="this.selected = 'Choose user'" name="user_id" required>
-            <option value="" selected disabled hidden>Choose user</option>
-            {% for user in users %}
-                <option value="{{ user[0] }}">{{ user[1] }}</option>
-            {% endfor %}
-        </select>
+            <label>User account: </label>
+            <select class="form-control" onchange="this.form.submit();" onfocus="this.selected = 'Choose user'" name="user_id" required>
+                <option value="" selected disabled hidden>Choose user</option>
+                {% for user in users %}
+                    <option value="{{ user[0] }}">{{ user[1] }}</option>
+                {% endfor %}
+            </select>
         </form>
     {% endif %}
 
 
-    <h1>Create account</h1>
+    <h1>Create user</h1>
 
     <form action="/create_user" method="post">
         <label for="usernameLabel">Username:</label>

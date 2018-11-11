@@ -29,12 +29,7 @@ def user_page():
 @app.route('/create_user', methods=['POST'])
 def add_user():
     username = request.form['username']
-    user_id = Database.add_user(username)
-
-    session['user'] = {
-        "id": user_id,
-        "name": username
-    }
+    session['user'] = Database.add_user(username)
 
     return redirect('index.html')
 
@@ -42,9 +37,15 @@ def add_user():
 def change_user():
     user_id = request.form['user_id']
 
-    Database.get_user(user_id)
+    session['user'] = Database.get_user(user_id)
 
     return redirect('index.html')
+
+@app.route("/clear_session")
+def clear_session():
+    session.clear()
+
+    return redirect('user.html')
 
 if __name__ == '__main__':
     app.secret_key = 'Movies'

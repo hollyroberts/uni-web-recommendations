@@ -1,5 +1,6 @@
 import sqlite3
 
+
 class Database:
     DATABASE = "database.db"
 
@@ -13,7 +14,10 @@ class Database:
             cursor.execute("INSERT INTO users (name, from_mvl) values (?, ?)", (username, False)).fetchone()
             db.commit()
 
-            return cursor.lastrowid
+            return {
+                "id": cursor.lastrowid,
+                "name": username
+            }
 
     @classmethod
     def get_users(cls):
