@@ -20,3 +20,13 @@ class Database:
         with sqlite3.connect(cls.DATABASE) as db:
             users = db.execute("SELECT * FROM users WHERE NOT from_mvl").fetchall()
             return users
+
+    @classmethod
+    def get_user(cls, user_id):
+        with sqlite3.connect(cls.DATABASE) as db:
+            result = db.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+
+            return {
+                "id": int(user_id),
+                "name": result[1]
+            }

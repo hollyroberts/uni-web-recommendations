@@ -38,6 +38,14 @@ def add_user():
 
     return redirect('index.html')
 
+@app.route("/select_user", methods=['POST'])
+def change_user():
+    user_id = request.form['user_id']
+
+    Database.get_user(user_id)
+
+    return redirect('index.html')
+
 if __name__ == '__main__':
     app.secret_key = 'Movies'
     app.config['SESSION_TYPE'] = 'filesystem'
