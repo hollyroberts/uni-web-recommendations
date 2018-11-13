@@ -3,6 +3,7 @@ import sqlite3
 
 class Database:
     DATABASE = "database.db"
+    NUMBER_OF_RESULTS = 50
 
     """
     Returns the id of the user inserted; assumes username is valid
@@ -18,6 +19,16 @@ class Database:
                 "id": cursor.lastrowid,
                 "name": username
             }
+
+    @classmethod
+    def search_movies(cls, search_str):
+        individual_words = search_str.split()
+
+        with sqlite3.connect(cls.DATABASE) as db:
+            results = db.execute("SELECT * FROM movies WHERE title LIKE '%Terminate%'")
+            print(results.fetchall())
+
+        return
 
     @classmethod
     def get_users(cls):

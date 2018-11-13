@@ -47,6 +47,15 @@ def clear_session():
 
     return redirect('user.html')
 
+@app.route("/search_movies", methods=['GET'])
+def search_movies():
+    if 'user' not in session:
+        return redirect('user.html')
+
+    Database.search_movies("")
+
+    return '', 200
+
 if __name__ == '__main__':
     app.secret_key = 'Movies'
     app.config['SESSION_TYPE'] = 'filesystem'
