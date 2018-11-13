@@ -6,6 +6,10 @@
     </head>
     <body>
     <span></span>
-    <input class="form-control" autofocus placeholder="Search for a movie..." >
+
+    <form id="search-movie" onsubmit="event.preventDefault(); searchMovie()">
+        <input id="search-movie-input" class="form-control" autofocus placeholder="Search for a movie...">
+    </form>
+
     </body>
 {% endblock %}
