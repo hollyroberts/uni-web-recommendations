@@ -1,13 +1,62 @@
 import sqlite3
+import re
 
+def regexp(expr, item):
+    reg = re.compile(expr, re.IGNORECASE)
+    return reg.search(item) is not None
 
 class Database:
     DATABASE = "database.db"
     NUMBER_OF_RESULTS = 50
 
+    COMMON_WORDS = ["the",
+                    "of",
+                    "and",
+                    "a",
+                    "to",
+                    "in",
+                    "is",
+                    "you",
+                    "that",
+                    "it",
+                    "he",
+                    "was",
+                    "for",
+                    "on",
+                    "are",
+                    "as",
+                    "with",
+                    "his",
+                    "they",
+                    "I",
+                    "at",
+                    "be",
+                    "this",
+                    "have",
+                    "from",
+                    "or",
+                    "one",
+                    "had",
+                    "by",
+                    "word",
+                    "but",
+                    "not",
+                    "what"
+                    "all",
+                    "were",
+                    "we",
+                    "when",
+                    "your",
+                    "can"]
+
     """
     Returns the id of the user inserted; assumes username is valid
     """
+
+    @classmethod
+    def get_like_query_str(cls, word):
+        return
+
     @classmethod
     def add_user(cls, username):
         with sqlite3.connect(cls.DATABASE) as db:
@@ -22,11 +71,20 @@ class Database:
 
     @classmethod
     def search_movies(cls, search_str):
-        individual_words = search_str.split()
+        individual_words = list(f"(^|\s){search_str}($|\s)" for word in search_str.split() if word not in cls.COMMON_WORDS)
 
         with sqlite3.connect(cls.DATABASE) as db:
-            results = db.execute("SELECT * FROM movies WHERE title LIKE '%Terminate%'")
-            print(results.fetchall())
+            # Create regex function
+            db.create_function("REGEXP", 2, regexp)
+
+            full_match_results = db.execute("SELECT * FROM movies WHERE title REGEXP ?", [f"(^|\s){search_str}($|\s)"])
+            print(full_match_results.fetchall())
+
+            # Assemble our query to search on each word
+            if len(individual_words) > 0:
+                query = ' '.join(["OR title REGEXP ?"] * len(individual_words))[3:]
+                word_match_results = db.execute("SELECT * FROM movies WHERE " + query, individual_words)
+                print(word_match_results.fetchall())
 
         return
 

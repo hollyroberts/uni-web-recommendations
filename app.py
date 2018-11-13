@@ -52,7 +52,8 @@ def search_movies():
     if 'user' not in session:
         return redirect('user.html')
 
-    Database.search_movies("")
+    title = request.args.get('title')
+    Database.search_movies(title)
 
     return '', 200
 
