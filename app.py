@@ -51,7 +51,10 @@ def search_movies():
     if 'user' not in session:
         return redirect('user.html')
 
+    # Retrieve args from request
     title = request.args.get('title')
+    recommend = request.args.get('recommend')
+
     Database.search_movies(title)
 
     return '', 200
