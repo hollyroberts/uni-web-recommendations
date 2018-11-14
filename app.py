@@ -12,7 +12,6 @@ csv_movies = pandas.read_csv("data/movies.csv")
 print("CSV files loaded")
 
 users = Database.get_users()
-print(users)
 
 @app.route('/')
 @app.route('/index.html')

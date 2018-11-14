@@ -8,8 +8,17 @@
     <span></span>
 
     <form id="search-movie" onsubmit="event.preventDefault(); searchMovie()">
-        <input id="search-movie-input" class="form-control" autofocus placeholder="Search for a movie...">
+        <label for="search-movie">Search movies:</label>
+        <input id="search-movie-input" name="search-movie" class="form-control" autofocus placeholder="Search for a movie...">
     </form>
+
+    <hr>
+
+    <h3 id="results-title">Recommendations</h3>
+
+    <div id="results-container">
+        <p>Todo</p>
+    </div>
 
     </body>
 {% endblock %}

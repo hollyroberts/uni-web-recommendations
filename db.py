@@ -7,7 +7,7 @@ def regexp(expr, item):
 
 class Database:
     DATABASE = "database.db"
-    NUMBER_OF_RESULTS = 50
+    MAX_NUMBER_OF_RESULTS = 50
 
     COMMON_WORDS = ["the",
                     "of",
