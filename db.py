@@ -72,13 +72,13 @@ class Database:
 
     @classmethod
     def search_movies(cls, search_str):
-        individual_words = list(f"(^|\s){search_str}($|\s)" for word in search_str.split() if word not in cls.COMMON_WORDS)
+        individual_words = list(f"(^|\W){search_str}($|\W)" for word in search_str.split() if word not in cls.COMMON_WORDS)
 
         with sqlite3.connect(cls.DATABASE) as db:
             # Create regex function
             db.create_function("REGEXP", 2, regexp)
 
-            full_match_results = db.execute("SELECT * FROM movies WHERE title REGEXP ?", [f"(^|\s){search_str}($|\s)"])
+            full_match_results = db.execute("SELECT * FROM movies WHERE title REGEXP ?", [f"(^|\W){search_str}($|\W)"])
             print(full_match_results.fetchall())
 
             # Assemble our query to search on each word
