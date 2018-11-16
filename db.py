@@ -1,6 +1,7 @@
 import sqlite3
 import re
 
+# https://stackoverflow.com/a/5365533
 def regexp(expr, item):
     reg = re.compile(expr, re.IGNORECASE)
     return reg.search(item) is not None
