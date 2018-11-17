@@ -13,7 +13,7 @@ with sqlite3.connect("database.db") as db:
     print(f"Loaded movies in {round(time.time() - start, 1)} seconds")
 
     print("Loading ratings")
-    print("This will take a while (about a minute) and take a fair amount of memory")
+    print("This will take a while (about a minute) and use a fair amount of memory (~3GB) while loading the database")
     ratings = pandas.read_sql("SELECT user_id, movie_id, rating_score FROM ratings", db)
     print(f"Loaded ratings in {round(time.time() - start, 1)} seconds")
     print("Done")
