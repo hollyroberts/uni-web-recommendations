@@ -1,15 +1,25 @@
 import pandas
+import sqlite3, time
 from flask import Flask, session, render_template, redirect, request
 
 from db import Database
 
 app = Flask(__name__, static_url_path='/static')
 
-print("Loading movies")
-csv_movies = pandas.read_csv("data/movies.csv")
-# print("Loading ratings")
-# csv_ratings = pandas.read_csv("data/ratings.csv")
-print("CSV files loaded")
+start = time.time()
+with sqlite3.connect("database.db") as db:
+    print("Loading movies")
+    movies = pandas.read_sql("SELECT id, title FROM movies", db)
+    print(f"Loaded movies in {round(time.time() - start, 1)} seconds")
+
+    print("Loading ratings")
+    print("This will take a while (about a minute) and take a fair amount of memory")
+    ratings = pandas.read_sql("SELECT user_id, movie_id, rating_score FROM ratings", db)
+    print(f"Loaded ratings in {round(time.time() - start, 1)} seconds")
+    print("Done")
+
+print(movies.head())
+print(ratings.head())
 
 users = Database.get_users()
 
