@@ -11,7 +11,17 @@ function searchMovie() {
         recommend: recommend
     };
 
-    $.get("/search_movies", data, function(data) {
-       console.log(data)
+    $.get("/search_movies", data, function (data) {
+        console.log(data)
+
+        let container = $("#results-container")[0];
+        if (data.length === 0) {
+            container.innerHTML = "<p>No results found</p>";
+            return;
+        }
+
+        let htmlString = "<p>" + data.length + (data.length === 1 ? " result" : " results") + " found</p>";
+
+        container.innerHTML = htmlString;
     });
 }
