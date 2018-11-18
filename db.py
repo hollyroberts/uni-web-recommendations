@@ -54,11 +54,6 @@ class Database:
     """
     Returns the id of the user inserted; assumes username is valid
     """
-
-    @classmethod
-    def get_like_query_str(cls, word):
-        return
-
     @classmethod
     def add_user(cls, username):
         with sqlite3.connect(cls.DATABASE) as db:

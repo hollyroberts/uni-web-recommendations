@@ -11,7 +11,7 @@ function searchMovie() {
         recommend: recommend
     };
 
-    $.get("/search_movies", data, function(data, status) {
-       //alert(data);
+    $.get("/search_movies", data, function(data) {
+       console.log(data)
     });
 }

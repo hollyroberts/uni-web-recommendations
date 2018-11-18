@@ -1,6 +1,6 @@
 import pandas
 import sqlite3, time
-from flask import Flask, session, render_template, redirect, request
+from flask import Flask, session, render_template, redirect, request, jsonify
 
 from db import Database
 
@@ -14,12 +14,12 @@ with sqlite3.connect("database.db") as db:
 
     print("Loading ratings")
     print("This will take a while (about a minute) and use a fair amount of memory (~3GB) while loading the database")
-    ratings = pandas.read_sql("SELECT user_id, movie_id, rating_score FROM ratings", db)
+    # ratings = pandas.read_sql("SELECT user_id, movie_id, rating_score FROM ratings", db)
     print(f"Loaded ratings in {round(time.time() - start, 1)} seconds")
     print("Done")
 
 print(movies.head())
-print(ratings.head())
+# print(ratings.head())
 
 users = Database.get_users()
 
@@ -65,9 +65,9 @@ def search_movies():
     title = request.args.get('title')
     recommend = request.args.get('recommend')
 
-    Database.search_movies(title)
+    results = Database.search_movies(title)
 
-    return '', 200
+    return jsonify(results)
 
 if __name__ == '__main__':
     app.secret_key = 'Movies'
