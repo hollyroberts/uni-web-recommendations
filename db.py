@@ -83,6 +83,16 @@ class Database:
                 word_match_results = db.execute("SELECT * FROM movies WHERE " + query, individual_words)
                 results.update(word_match_results.fetchall())
 
+            for movie_id in results.keys():
+                sql_query = "SELECT genres.genre FROM movies INNER JOIN movie_genres ON movies.id = movie_genres.movie_id AND movies.id = ? INNER JOIN genres ON genres.id = movie_genres.genre_id"
+                genres = list(genre[0] for genre in db.execute(sql_query, (movie_id,)).fetchall())
+
+                # Convert dict from movie id --> title
+                # into movie id --> [title, genres]
+                results[movie_id] = [results[movie_id], genres]
+
+            print(results.items())
+
         return list(results.values())
 
     @classmethod

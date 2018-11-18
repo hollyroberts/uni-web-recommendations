@@ -37,10 +37,18 @@ function setTableElements(table, elements) {
     // Clear existing table data
     table.find("tr:gt(0)").remove();
 
-    for (let movie of elements) {
+    for (let movieData of elements) {
+        // Movie title
         let appendStr = "<tr>";
-        appendStr += "<td>" + movie + "</td>";
-        appendStr += "<td>Test2</td>";
+        appendStr += "<td>" + movieData[0] + "</td>";
+
+        // Movie genres
+        if (movieData[1].length === 0) {
+            appendStr += "<td>No genres</td>";
+        } else {
+            appendStr += "<td>" + movieData[1].join(", ") + "</td>";
+        }
+        
         appendStr += "<td>Test3</td>";
         appendStr += "</tr>";
 
