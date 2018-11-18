@@ -21,8 +21,6 @@ with sqlite3.connect("database.db") as db:
 print(movies.head())
 # print(ratings.head())
 
-users = Database.get_users()
-
 @app.route('/')
 @app.route('/index.html')
 def index():
@@ -33,7 +31,7 @@ def index():
 
 @app.route('/user.html')
 def user_page():
-    return render_template('user.html', users=users)
+    return render_template('user.html', users=Database.get_users())
 
 @app.route('/create_user', methods=['POST'])
 def add_user():
