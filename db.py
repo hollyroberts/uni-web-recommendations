@@ -72,7 +72,7 @@ class Database:
 
     @classmethod
     def search_movies(cls, search_str):
-        individual_words = list(cls._get_regex_str(search_str) for word in search_str.split() if word not in cls.COMMON_WORDS)
+        individual_words = list(cls._get_regex_str(word) for word in search_str.split() if word not in cls.COMMON_WORDS)
 
         with sqlite3.connect(cls.DATABASE) as db:
             # Create regex function
