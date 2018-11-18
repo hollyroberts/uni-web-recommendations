@@ -22,24 +22,32 @@ function searchMovie() {
         // Update status
         if (data.length === 0) {
             status.innerHTML = "<h4>No results found for \"" + searchStr + "\"</h4>";
-            table.hidden = true;
+            showTable(false);
             return;
         }
         status.innerHTML = "<p>" + data.length + (data.length === 1 ? " result" : " results") + " found</p>";
 
-        // Clear existing table data
-        table.find("tr:gt(0)").remove();
-
-        for (let movie of data) {
-            let appendStr = "<tr>";
-            appendStr += "<td>Test1</td>";
-            appendStr += "<td>Test2</td>";
-            appendStr += "<td>Test3</td>";
-            appendStr += "</tr>";
-
-            table.append(appendStr);
-        }
-
-        table.hidden = false;
+        // Update table
+        setTableElements(table, data);
+        showTable()
     });
+}
+
+function setTableElements(table, elements) {
+    // Clear existing table data
+    table.find("tr:gt(0)").remove();
+
+    for (let movie of elements) {
+        let appendStr = "<tr>";
+        appendStr += "<td>" + movie + "</td>";
+        appendStr += "<td>Test2</td>";
+        appendStr += "<td>Test3</td>";
+        appendStr += "</tr>";
+
+        table.append(appendStr);
+    }
+}
+
+function showTable(bool = true) {
+    $("#results-table")[0].hidden = !bool;
 }
