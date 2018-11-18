@@ -12,16 +12,14 @@ function searchMovie() {
     };
 
     $.get("/search_movies", data, function (data) {
-        console.log(data)
+        console.log(data);
 
-        let container = $("#results-container")[0];
+        let status = $("#results-container")[0];
         if (data.length === 0) {
-            container.innerHTML = "<p>No results found</p>";
+            status.innerHTML = "<h4>No results found</h4>";
             return;
         }
 
-        let htmlString = "<p>" + data.length + (data.length === 1 ? " result" : " results") + " found</p>";
-
-        container.innerHTML = htmlString;
+        status.innerHTML = "<p>" + data.length + (data.length === 1 ? " result" : " results") + " found</p>";
     });
 }
