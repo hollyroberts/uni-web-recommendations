@@ -91,8 +91,6 @@ class Database:
                 # into movie id --> [title, genres]
                 results[movie_id] = [results[movie_id], genres]
 
-            print(results.items())
-
         return list(results.values())
 
     @classmethod

@@ -48,7 +48,7 @@ function setTableElements(table, elements) {
         } else {
             appendStr += "<td>" + movieData[1].join(", ") + "</td>";
         }
-        
+
         appendStr += "<td>Test3</td>";
         appendStr += "</tr>";
 
