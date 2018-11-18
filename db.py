@@ -1,5 +1,6 @@
 import sqlite3
 import re
+from collections import OrderedDict
 
 # https://stackoverflow.com/a/5365533
 def regexp(expr, item):
@@ -79,15 +80,15 @@ class Database:
             db.create_function("REGEXP", 2, regexp)
 
             full_match_results = db.execute("SELECT * FROM movies WHERE title REGEXP ?", [cls._get_regex_str(search_str)])
-            print(full_match_results.fetchall())
+            results = OrderedDict(full_match_results.fetchall())
 
             # Assemble our query to search on each word
             if len(individual_words) > 0:
                 query = ' '.join(["OR title REGEXP ?"] * len(individual_words))[3:]
                 word_match_results = db.execute("SELECT * FROM movies WHERE " + query, individual_words)
-                print(word_match_results.fetchall())
+                results.update(word_match_results.fetchall())
 
-        return
+        return list(results.values())
 
     @classmethod
     def get_users(cls):
