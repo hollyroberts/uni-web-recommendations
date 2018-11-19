@@ -18,6 +18,12 @@ function searchMovie() {
         // Get DOM elements
         let status = $("#results-status")[0];
         let table = $("#results-table");
+        let recHeader = $("#page-header-recommend")[0];
+        let searchHeader = $("#page-header-search")[0];
+
+        // Update header and button
+        recHeader.hidden = true;
+        searchHeader.hidden = false;
 
         // Update status
         if (data.length === 0) {
