@@ -39,6 +39,10 @@ function searchMovie() {
     });
 }
 
+function back() {
+    alert("Hello");
+}
+
 function setTableElements(table, elements) {
     // Clear existing table data
     table.find("tr:gt(0)").remove();
