@@ -1,6 +1,6 @@
 let maxPage = 0;
 
-function searchMovie() {
+function searchMovie(page = 0) {
     displayLoadingMessage();
 
     // Form elements
@@ -33,11 +33,16 @@ function searchMovie() {
             changeResultsVisibility(false, true);
             return;
         }
-        setStatus("<p>" + data.length + (data.length === 1 ? " result" : " results") + " found</p>");
+
+        maxPage = data['maxPages'];
+        let numberOfResults = data['numMovies'];
+
+        setStatus("<p>" + numberOfResults + (numberOfResults === 1 ? " result" : " results") + " found</p>");
 
         // Update table
         setTableElements(data['data']);
         changeResultsVisibility(true, true);
+        showPagination("searchMovie", page, maxPage)
     });
 }
 
@@ -114,13 +119,13 @@ function fetchRecs(page = 0) {
         // Update UI
         setTableElements(data['data']);
         changeResultsVisibility(true, false);
-        showPagination(page, maxPage);
+        showPagination("fetchRecs", page, maxPage);
     });
 }
 
 function displayLoadingMessage() {
     disablePagination();
-    setStatus("<p>Loading recommendations...</p>");
+    setStatus("<p>Loading movies...</p>");
     changeResultsVisibility(false, true);
 }
 
@@ -128,14 +133,14 @@ function disablePagination() {
     $("#pagination")[0].innerHTML = "";
 }
 
-function showPagination(curPage, maxPage) {
+function showPagination(updateFunction, curPage, maxPage) {
     let htmlStr = "";
 
     // Back
     if (curPage === 0) {
         htmlStr += `<li class="disabled"><a><span class="glyphicon glyphicon-chevron-left"></span></a></li>`;
     } else {
-        htmlStr += `<li><a onclick="fetchRecs(0)" role="button"><span class="glyphicon glyphicon-chevron-left"></span></a></li>`;
+        htmlStr += `<li><a onclick="${updateFunction}(0)" role="button"><span class="glyphicon glyphicon-chevron-left"></span></a></li>`;
     }
 
     // Current page
@@ -143,7 +148,7 @@ function showPagination(curPage, maxPage) {
 
     // Next
     if (curPage < maxPage) {
-        htmlStr += `<li><a onclick="fetchRecs(${curPage + 1})" role="button"><span class="glyphicon glyphicon-chevron-right"></span></a></li>`;
+        htmlStr += `<li><a onclick="${updateFunction}${curPage + 1})" role="button"><span class="glyphicon glyphicon-chevron-right"></span></a></li>`;
     } else {
         htmlStr += `<li class="disabled"><a><span class="glyphicon glyphicon-chevron-right"></span></a></li>`;
     }
