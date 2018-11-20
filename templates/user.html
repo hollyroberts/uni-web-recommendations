@@ -9,7 +9,7 @@
         <h1>Select account</h1>
 
         <form action="/select_user" method="post">
-            <label>User account: </label>
+            <label>Choose user manually created: </label>
             <!--suppress JSUnusedGlobalSymbols -->
             <select class="form-control" onchange="this.form.submit();" onfocus="this.selected = 'Choose user'" name="user_id" required title="Choose user">
                 <option value="" selected disabled hidden>Choose user</option>
@@ -17,6 +17,13 @@
                     <option value="{{ user[0] }}">{{ user[1] }}</option>
                 {% endfor %}
             </select>
+        </form>
+
+        <form action="/select_user" method="post">
+            <label style="margin-top: 15px">OR, enter a user id manually (0 - {{ max_user_id }}): </label><br>
+            <!--suppress JSUnusedGlobalSymbols -->
+            <input type="number" name="user_id" min="0" max="{{ max_user_id }}"><br>
+            <input type="submit" value="Select user" class="btn btn-primary" style="margin-top: 8px;">
         </form>
     {% endif %}
 

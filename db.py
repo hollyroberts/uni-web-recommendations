@@ -156,6 +156,11 @@ class Database:
 
         return list(movie_data.values())
 
+    @classmethod
+    def number_of_users(cls):
+        with sqlite3.connect(cls.DATABASE) as db:
+            return db.execute("SELECT COUNT(*) FROM users").fetchone()[0]
+
     # Private functions
     @classmethod
     def _get_regex_str(cls, string: str):
