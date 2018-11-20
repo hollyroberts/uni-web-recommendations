@@ -15,6 +15,7 @@ def regexp(expr, item):
 class Database:
     DATABASE = "database.db"
     MAX_NUMBER_OF_RESULTS = 30
+    LATENT_FACTORS = 50
 
     COMMON_WORDS = ["the",
                     "of",
@@ -128,7 +129,7 @@ class Database:
         # Decompose
         user_ratings_mean = np.mean(R, axis=1)
         R_demeaned = R - user_ratings_mean.reshape(-1, 1)
-        U, sigma, Vt = svds(R_demeaned, k=40)
+        U, sigma, Vt = svds(R_demeaned, k=cls.LATENT_FACTORS)
 
         predicted_ratings = np.dot(np.dot(U, np.diag(sigma)), Vt) + user_ratings_mean.reshape(-1, 1)
         preds_df = pd.DataFrame(predicted_ratings, columns=R_df.columns)
