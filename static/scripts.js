@@ -1,3 +1,5 @@
+let maxPage = 0;
+
 function searchMovie() {
     displayLoadingMessage();
 
@@ -109,11 +111,12 @@ function fetchRecs(page = 0) {
         // Update UI
         setTableElements(data);
         changeResultsVisibility(true, false);
-        showPagination(page);
+        showPagination(page, maxPage);
     });
 }
 
 function displayLoadingMessage() {
+    disablePagination();
     setStatus("<p>Loading recommendations...</p>");
     changeResultsVisibility(false, true);
 }
@@ -127,19 +130,19 @@ function showPagination(curPage, maxPage) {
 
     // Back
     if (curPage === 0) {
-        htmlStr += String.raw`<li class="disabled"><a><span class="glyphicon glyphicon-chevron-left"></span></a></li>`;
+        htmlStr += `<li class="disabled"><a><span class="glyphicon glyphicon-chevron-left"></span></a></li>`;
     } else {
-        htmlStr += String.raw`<li><a><span class="glyphicon glyphicon-chevron-left"></span></a></li>`;
+        htmlStr += `<li><a onclick="fetchRecs(0)" role="button"><span class="glyphicon glyphicon-chevron-left"></span></a></li>`;
     }
 
     // Current page
-    htmlStr += "<li><a>" + (curPage + 1) + "</a></li>"
+    htmlStr += `<li><a>${curPage + 1}</a></li>`;
 
     // Next
     if (curPage < maxPage) {
-        htmlStr += String.raw`<li><a><span class="glyphicon glyphicon-chevron-right"></span></a></li>`;
+        htmlStr += `<li><a onclick="fetchRecs(${curPage + 1})" role="button"><span class="glyphicon glyphicon-chevron-right"></span></a></li>`;
     } else {
-        htmlStr += String.raw`<li><a><span class="glyphicon glyphicon-chevron-right"></span></a></li>`;
+        htmlStr += `<li class="disabled"><a><span class="glyphicon glyphicon-chevron-right"></span></a></li>`;
     }
 
 
