@@ -36,7 +36,7 @@ function searchMovie() {
         setStatus("<p>" + data.length + (data.length === 1 ? " result" : " results") + " found</p>");
 
         // Update table
-        setTableElements(data);
+        setTableElements(data['data']);
         changeResultsVisibility(true, true);
     });
 }
@@ -109,7 +109,7 @@ function fetchRecs(page = 0) {
         }
 
         // Update UI
-        setTableElements(data);
+        setTableElements(data['data']);
         changeResultsVisibility(true, false);
         showPagination(page, maxPage);
     });

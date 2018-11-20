@@ -5,6 +5,7 @@ from scipy.sparse.linalg import svds
 import sqlite3
 import re
 from collections import OrderedDict
+import math
 
 # https://stackoverflow.com/a/5365533
 def regexp(expr, item):
@@ -89,7 +90,9 @@ class Database:
                 word_match_results = db.execute("SELECT id FROM movies WHERE " + query, individual_words)
                 movie_ids.update(x[0] for x in word_match_results.fetchall())
 
-        return cls.get_movies(list(movie_ids), user_id)
+        num_movies = len(movie_ids)
+
+        return cls.get_movies(list(movie_ids), user_id, num_movies)
 
     @classmethod
     def get_users(cls):
@@ -119,6 +122,9 @@ class Database:
             # Get movies from SQL query
             movie_data = pd.read_sql("SELECT user_id, movie_id, rating_score FROM ratings", db)
 
+            # Number of movies
+            num_movies = db.execute("SELECT COUNT(*) FROM movies").fetchone()[0]
+
         # Setup data frames
         ratings_mean_count = pd.DataFrame(movie_data.groupby('movie_id')['rating_score'].mean())
         ratings_mean_count['rating_counts'] = pd.DataFrame(movie_data.groupby('movie_id')['rating_score'].count())
@@ -139,10 +145,10 @@ class Database:
         ratings_for_user = ratings_for_user.iloc[user_id:user_id + 1, :cls.MAX_NUMBER_OF_RESULTS]
         movie_reccs = ratings_for_user.columns.values
 
-        return cls.get_movies(movie_reccs.tolist(), user_id)
+        return cls.get_movies(movie_reccs.tolist(), user_id, num_movies)
 
     @classmethod
-    def get_movies(cls, list_of_ids, user_id):
+    def get_movies(cls, list_of_ids, user_id, num_movies):
         with sqlite3.connect(cls.DATABASE) as db:
             results = db.execute("SELECT * FROM movies WHERE id in " + cls._list_to_sql(list_of_ids))
             movie_data = OrderedDict(results.fetchall())
@@ -154,7 +160,9 @@ class Database:
             item.extend(value)
             data_to_send.append(item)
 
-        return data_to_send
+        max_pages = math.ceil(num_movies / cls.MAX_NUMBER_OF_RESULTS)
+
+        return {"maxPages": max_pages, "numMovies": num_movies, "data": data_to_send}
 
     @classmethod
     def number_of_users(cls):
