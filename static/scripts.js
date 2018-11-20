@@ -38,7 +38,10 @@ function searchMovie() {
 }
 
 function back() {
-    alert("Hello");
+    setStatus("<p>Loading recommendations...</p>");
+    changeResultsVisibility(false, true);
+
+    fetchRecs(0);
 }
 
 function setTableElements(elements) {
