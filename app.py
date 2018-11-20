@@ -29,7 +29,7 @@ with sqlite3.connect("database.db") as db:
     predicted_ratings = np.dot(np.dot(U, np.diag(sigma)), Vt) + user_ratings_mean.reshape(-1, 1)
     preds_df = pd.DataFrame(predicted_ratings, columns=R_df.columns)
 
-    print(preds_df.head())
+    print(preds_df)
 
     # print("Loading movies")
     # movies = pandas.read_sql("SELECT id, title FROM movies", db)
@@ -91,7 +91,9 @@ def search_movies():
 def get_reccs():
     page = request.args.get('page')
 
-    return jsonify(Database.search_movies("Hello"))
+    return jsonify({"noRatings": True})
+
+    # return jsonify(Database.search_movies("Hello"))
 
 if __name__ == '__main__':
     app.secret_key = 'Movies'

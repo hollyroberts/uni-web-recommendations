@@ -16,7 +16,6 @@ function searchMovie() {
         console.log(data);
 
         // Get DOM elements
-        let status = $("#results-status")[0];
         let recHeader = $("#page-header-recommend")[0];
         let searchHeader = $("#page-header-search")[0];
 
@@ -26,11 +25,11 @@ function searchMovie() {
 
         // Update status
         if (data.length === 0) {
-            status.innerHTML = "<h4>No results found for \"" + searchStr + "\"</h4>";
+            setStatus("<h4>No results found for \"" + searchStr + "\"</h4>");
             changeResultsVisibility(false, true);
             return;
         }
-        status.innerHTML = "<p>" + data.length + (data.length === 1 ? " result" : " results") + " found</p>";
+        setStatus("<p>" + data.length + (data.length === 1 ? " result" : " results") + " found</p>");
 
         // Update table
         setTableElements(data);
@@ -72,16 +71,20 @@ function changeResultsVisibility(showTable, showStatus) {
     $("#results-status")[0].hidden = !showStatus;
 }
 
+function setStatus(html) {
+    let status = $("#results-status")[0];
+    status.innerHTML = html;
+}
+
 function fetchRecs(page = 0) {
     $.get("/recommendations", {page: page}, function (data) {
-        console.log(data);
+        if (data.hasOwnProperty("noRatings")) {
+            setStatus("<h4>You haven't rated any movies yet, so no recommendations can be generated</h4>");
+            changeResultsVisibility(false, true);
+        }
 
+        // Update UI
         setTableElements(data);
-
-        // Hide/show UI elements
-        let loadingStatus = $("#loading-recs")[0];
-        loadingStatus.hidden = true;
-
         changeResultsVisibility(true, false);
     });
 }
