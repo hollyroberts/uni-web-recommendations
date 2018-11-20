@@ -95,7 +95,7 @@ class Database:
                 # into movie id --> [title, genres]
                 results[movie_id] = [results[movie_id], genres]
 
-        return list(results.values()[:cls.MAX_NUMBER_OF_RESULTS])
+        return list(results.values())[:cls.MAX_NUMBER_OF_RESULTS]
 
     @classmethod
     def get_users(cls):
@@ -119,7 +119,7 @@ class Database:
         with sqlite3.connect(cls.DATABASE) as db:
             # Check if we've rated anything first
             has_ratings = db.execute("SELECT COUNT(*) FROM ratings WHERE user_id = ?", (user_id,)).fetchone()
-            if has_ratings == 0:
+            if has_ratings[0] == 0:
                 return {"noRatings": True}
 
             # Get movies from SQL query
@@ -150,9 +150,11 @@ class Database:
     @classmethod
     def get_movies(cls, list_of_ids):
         with sqlite3.connect(cls.DATABASE) as db:
-            # Ugly hack to get data how we want
-            ids_str = "(" + ", ".join(map(str, list_of_ids)) + ")"
-            movie_data = db.execute("SELECT * FROM movies WHERE id in " + ids_str).fetchall()
+            results = db.execute("SELECT * FROM movies WHERE id in " + cls._list_to_sql(list_of_ids))
+            movie_data = OrderedDict(results.fetchall())
+            movie_data = cls._add_genre_info(movie_data)
+
+        return list(movie_data.values())
 
     # Private functions
     @classmethod
@@ -160,5 +162,19 @@ class Database:
         return f"(^|\W){re.escape(string)}($|\W)"
 
     @classmethod
-    def _add_genre_info(cls, movie_ids):
-        pass
+    def _add_genre_info(cls, movie_data: OrderedDict):
+        with sqlite3.connect(cls.DATABASE) as db:
+            for movie_id in movie_data.keys():
+                sql_query = "SELECT genres.genre FROM movies INNER JOIN movie_genres ON movies.id = movie_genres.movie_id AND movies.id = ? INNER JOIN genres ON genres.id = movie_genres.genre_id"
+                genres = list(genre[0] for genre in db.execute(sql_query, (movie_id,)).fetchall())
+
+                # Convert dict from movie id --> title
+                # into movie id --> [title, genres]
+                movie_data[movie_id] = [movie_data[movie_id], genres]
+        
+        return movie_data
+
+    @classmethod
+    def _list_to_sql(cls, list_of_ids):
+        # Ugly hack to get data how we want
+        return "(" + ", ".join(map(str, list_of_ids)) + ")"

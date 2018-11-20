@@ -66,7 +66,7 @@ def search_movies():
 def get_reccs():
     page = request.args.get('page')
 
-    return Database.get_reccs(609) # session['user']['id'])
+    return jsonify(Database.get_reccs(session['user']['id']))
 
 if __name__ == '__main__':
     app.secret_key = 'Movies'
