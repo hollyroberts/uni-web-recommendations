@@ -64,7 +64,14 @@ function setTableElements(elements) {
             appendStr += "<td>" + movieGenres.join(", ") + "</td>";
         }
 
-        appendStr += "<td>Test3</td>";
+        appendStr += String.raw`<td><select class="form-control" onchange="this.form.submit();" onfocus="this.selected = 'No rating'">
+                <option value="" selected disabled hidden>No rating</option>`;
+
+        for (let rating = 0.5; rating <= 5; rating += 0.5) {
+            appendStr += '<option value="' + rating + '">' + rating + '</option>';
+        }
+
+        appendStr += String.raw`</select></td>`;
         appendStr += "</tr>";
 
         table.append(appendStr);
