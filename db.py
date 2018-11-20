@@ -11,9 +11,10 @@ def regexp(expr, item):
     reg = re.compile(expr, re.IGNORECASE)
     return reg.search(item) is not None
 
+# noinspection SqlResolve
 class Database:
     DATABASE = "database.db"
-    MAX_NUMBER_OF_RESULTS = 50
+    MAX_NUMBER_OF_RESULTS = 30
 
     COMMON_WORDS = ["the",
                     "of",
@@ -78,24 +79,16 @@ class Database:
             # Create regex function
             db.create_function("REGEXP", 2, regexp)
 
-            full_match_results = db.execute("SELECT * FROM movies WHERE title REGEXP ?", [cls._get_regex_str(search_str)])
-            results = OrderedDict(full_match_results.fetchall())
+            full_match_results = db.execute("SELECT id FROM movies WHERE title REGEXP ?", [cls._get_regex_str(search_str)])
+            movie_ids = set(x[0] for x in full_match_results.fetchall())
 
             # Assemble our query to search on each word
             if len(individual_words) > 0:
                 query = ' '.join(["OR title REGEXP ?"] * len(individual_words))[3:]
-                word_match_results = db.execute("SELECT * FROM movies WHERE " + query, individual_words)
-                results.update(word_match_results.fetchall())
+                word_match_results = db.execute("SELECT id FROM movies WHERE " + query, individual_words)
+                movie_ids.update(x[0] for x in word_match_results.fetchall())
 
-            for movie_id in results.keys():
-                sql_query = "SELECT genres.genre FROM movies INNER JOIN movie_genres ON movies.id = movie_genres.movie_id AND movies.id = ? INNER JOIN genres ON genres.id = movie_genres.genre_id"
-                genres = list(genre[0] for genre in db.execute(sql_query, (movie_id,)).fetchall())
-
-                # Convert dict from movie id --> title
-                # into movie id --> [title, genres]
-                results[movie_id] = [results[movie_id], genres]
-
-        return list(results.values())[:cls.MAX_NUMBER_OF_RESULTS]
+        return cls.get_movies(list(movie_ids))
 
     @classmethod
     def get_users(cls):
@@ -135,7 +128,7 @@ class Database:
         # Decompose
         user_ratings_mean = np.mean(R, axis=1)
         R_demeaned = R - user_ratings_mean.reshape(-1, 1)
-        U, sigma, Vt = svds(R_demeaned, k=20)
+        U, sigma, Vt = svds(R_demeaned, k=40)
 
         predicted_ratings = np.dot(np.dot(U, np.diag(sigma)), Vt) + user_ratings_mean.reshape(-1, 1)
         preds_df = pd.DataFrame(predicted_ratings, columns=R_df.columns)
@@ -154,7 +147,13 @@ class Database:
             movie_data = OrderedDict(results.fetchall())
             movie_data = cls._add_genre_info(movie_data)
 
-        return list(movie_data.values())
+        data_to_send = []
+        for (key, value) in movie_data.items():
+            item = [key]
+            item.extend(value)
+            data_to_send.append(item)
+
+        return data_to_send
 
     @classmethod
     def number_of_users(cls):

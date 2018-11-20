@@ -48,15 +48,20 @@ function setTableElements(elements) {
     table.find("tr:gt(0)").remove();
 
     for (let movieData of elements) {
+        // Retrieve data
+        let movieId = movieData[0];
+        let movieTitle = movieData[1];
+        let movieGenres = movieData[2];
+
         // Movie title
         let appendStr = "<tr>";
-        appendStr += "<td>" + movieData[0] + "</td>";
+        appendStr += "<td>" + movieTitle + "</td>";
 
         // Movie genres
-        if (movieData[1].length === 0) {
+        if (movieGenres.length === 0) {
             appendStr += "<td>No genres</td>";
         } else {
-            appendStr += "<td>" + movieData[1].join(", ") + "</td>";
+            appendStr += "<td>" + movieGenres.join(", ") + "</td>";
         }
 
         appendStr += "<td>Test3</td>";
