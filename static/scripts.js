@@ -44,6 +44,8 @@ function back() {
 function setTableElements(elements) {
     let table = $("#results-table");
 
+    console.log(elements);
+
     // Clear existing table data
     table.find("tr:gt(0)").remove();
 
@@ -52,6 +54,7 @@ function setTableElements(elements) {
         let movieId = movieData[0];
         let movieTitle = movieData[1];
         let movieGenres = movieData[2];
+        let movieRating = movieData[3];
 
         // Movie title
         let appendStr = "<tr>";

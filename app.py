@@ -58,12 +58,15 @@ def search_movies():
     title = request.args.get('title')
     recommend = request.args.get('recommend')
 
-    results = Database.search_movies(title)
+    results = Database.search_movies(title, session['user']['id'])
 
     return jsonify(results)
 
 @app.route("/recommendations", methods=['GET'])
 def get_reccs():
+    if 'user' not in session:
+        return redirect('user.html')
+
     page = request.args.get('page')
 
     return jsonify(Database.get_reccs(session['user']['id']))
