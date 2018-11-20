@@ -71,7 +71,13 @@ function setTableElements(elements) {
                 <option value="" selected disabled hidden>No rating</option>`;
 
         for (let rating = 0.5; rating <= 5; rating += 0.5) {
-            appendStr += '<option value="' + rating + '">' + rating + '</option>';
+            appendStr += '<option value="' + rating + '"';
+
+            if (movieRating === rating) {
+                appendStr += " selected";
+            }
+
+            appendStr += '>' + rating + '</option>';
         }
 
         appendStr += String.raw`</select></td>`;

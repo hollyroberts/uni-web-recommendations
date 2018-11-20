@@ -173,11 +173,11 @@ class Database:
                 sql_query = "SELECT genres.genre FROM movies INNER JOIN movie_genres ON movies.id = movie_genres.movie_id AND movies.id = ? INNER JOIN genres ON genres.id = movie_genres.genre_id"
                 genres = list(genre[0] for genre in db.execute(sql_query, (movie_id,)).fetchall())
 
-                rating = db.execute("SELECT rating_score FROM ratings WHERE user_id = ? AND movie_id = ?", (user_id, movie_id)).fetchone()[0]
+                rating = db.execute("SELECT rating_score FROM ratings WHERE user_id = ? AND movie_id = ?", (user_id, movie_id)).fetchone()
 
                 # Convert dict from movie id --> title
                 # into movie id --> [title, [genre1, genre2, ...], rating]
-                movie_data[movie_id] = [movie_data[movie_id], genres, rating]
+                movie_data[movie_id] = [movie_data[movie_id], genres, rating[0] if rating is not None else None]
         
         return movie_data
 
