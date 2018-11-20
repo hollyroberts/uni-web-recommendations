@@ -103,10 +103,13 @@ function fetchRecs(page = 0) {
     displayLoadingMessage();
 
     $.get("/recommendations", {page: page}, function (data) {
+        // Check response metadata
         if (data.hasOwnProperty("noRatings")) {
             setStatus("<h4>You haven't rated any movies yet, so no recommendations can be generated</h4>");
             changeResultsVisibility(false, true);
         }
+
+        maxPage = data['maxPages'];
 
         // Update UI
         setTableElements(data['data']);
