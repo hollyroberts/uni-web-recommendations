@@ -116,7 +116,12 @@ class Database:
     # noinspection PyPep8Naming
     @classmethod
     def get_reccs(cls, user_id: int, page: int = 0):
-        with sqlite3.connect("database.db") as db:
+        with sqlite3.connect(cls.DATABASE) as db:
+            # Check if we've rated anything first
+            has_ratings = db.execute("SELECT COUNT(*) FROM ratings WHERE user_id = ?", (user_id,)).fetchone()
+            if has_ratings == 0:
+                return {"noRatings": True}
+
             # Get movies from SQL query
             movie_data = pd.read_sql("SELECT user_id, movie_id, rating_score FROM ratings", db)
 
@@ -138,9 +143,22 @@ class Database:
         # Sort row descending and retrieve first X results
         ratings_for_user = preds_df.sort_values(by=user_id, ascending=False, axis=1)
         ratings_for_user = ratings_for_user.iloc[user_id:user_id + 1, :cls.MAX_NUMBER_OF_RESULTS]
-        print(ratings_for_user)
+        movie_reccs = ratings_for_user.columns.values
+
+        return cls.get_movies(movie_reccs.tolist())
+
+    @classmethod
+    def get_movies(cls, list_of_ids):
+        with sqlite3.connect(cls.DATABASE) as db:
+            # Ugly hack to get data how we want
+            ids_str = "(" + ", ".join(map(str, list_of_ids)) + ")"
+            movie_data = db.execute("SELECT * FROM movies WHERE id in " + ids_str).fetchall()
 
     # Private functions
     @classmethod
     def _get_regex_str(cls, string: str):
         return f"(^|\W){re.escape(string)}($|\W)"
+
+    @classmethod
+    def _add_genre_info(cls, movie_ids):
+        pass
