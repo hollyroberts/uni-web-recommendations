@@ -1,4 +1,6 @@
 function searchMovie() {
+    displayLoadingMessage();
+
     // Form elements
     let searchStr = $("#search-movie-input").val();
     if (searchStr.length === 0) {
@@ -38,16 +40,11 @@ function searchMovie() {
 }
 
 function back() {
-    setStatus("<p>Loading recommendations...</p>");
-    changeResultsVisibility(false, true);
-
     fetchRecs(0);
 }
 
 function setTableElements(elements) {
     let table = $("#results-table");
-
-    console.log(elements);
 
     // Clear existing table data
     table.find("tr:gt(0)").remove();
@@ -101,6 +98,8 @@ function setStatus(html) {
 }
 
 function fetchRecs(page = 0) {
+    displayLoadingMessage();
+
     $.get("/recommendations", {page: page}, function (data) {
         if (data.hasOwnProperty("noRatings")) {
             setStatus("<h4>You haven't rated any movies yet, so no recommendations can be generated</h4>");
@@ -110,5 +109,39 @@ function fetchRecs(page = 0) {
         // Update UI
         setTableElements(data);
         changeResultsVisibility(true, false);
+        showPagination(page);
     });
+}
+
+function displayLoadingMessage() {
+    setStatus("<p>Loading recommendations...</p>");
+    changeResultsVisibility(false, true);
+}
+
+function disablePagination() {
+    $("#pagination")[0].innerHTML = "";
+}
+
+function showPagination(curPage, maxPage) {
+    let htmlStr = "";
+
+    // Back
+    if (curPage === 0) {
+        htmlStr += String.raw`<li class="disabled"><a><span class="glyphicon glyphicon-chevron-left"></span></a></li>`;
+    } else {
+        htmlStr += String.raw`<li><a><span class="glyphicon glyphicon-chevron-left"></span></a></li>`;
+    }
+
+    // Current page
+    htmlStr += "<li><a>" + (curPage + 1) + "</a></li>"
+
+    // Next
+    if (curPage < maxPage) {
+        htmlStr += String.raw`<li><a><span class="glyphicon glyphicon-chevron-right"></span></a></li>`;
+    } else {
+        htmlStr += String.raw`<li><a><span class="glyphicon glyphicon-chevron-right"></span></a></li>`;
+    }
+
+
+    $("#pagination")[0].innerHTML = htmlStr;
 }
