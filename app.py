@@ -26,7 +26,7 @@ def index():
 
 @app.route('/user.html')
 def user_page():
-    return render_template('user.html', users=Database.get_users(), max_user_id=Database.number_of_users() - 1)
+    return render_template('user.html', users=Database.get_users(), max_user_id=Database.number_of_users())
 
 @app.route('/create_user', methods=['POST'])
 def add_user():
