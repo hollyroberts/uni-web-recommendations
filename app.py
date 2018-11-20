@@ -87,6 +87,12 @@ def search_movies():
 
     return jsonify(results)
 
+@app.route("/recommendations", methods=['GET'])
+def get_reccs():
+    page = request.args.get('page')
+
+    return jsonify(Database.search_movies("Hello"))
+
 if __name__ == '__main__':
     app.secret_key = 'Movies'
     app.config['SESSION_TYPE'] = 'filesystem'

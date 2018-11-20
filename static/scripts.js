@@ -17,7 +17,6 @@ function searchMovie() {
 
         // Get DOM elements
         let status = $("#results-status")[0];
-        let table = $("#results-table");
         let recHeader = $("#page-header-recommend")[0];
         let searchHeader = $("#page-header-search")[0];
 
@@ -28,14 +27,14 @@ function searchMovie() {
         // Update status
         if (data.length === 0) {
             status.innerHTML = "<h4>No results found for \"" + searchStr + "\"</h4>";
-            showTable(false);
+            changeResultsVisibility(false, true);
             return;
         }
         status.innerHTML = "<p>" + data.length + (data.length === 1 ? " result" : " results") + " found</p>";
 
         // Update table
-        setTableElements(table, data);
-        showTable()
+        setTableElements(data);
+        changeResultsVisibility(true, true);
     });
 }
 
@@ -43,7 +42,9 @@ function back() {
     alert("Hello");
 }
 
-function setTableElements(table, elements) {
+function setTableElements(elements) {
+    let table = $("#results-table");
+
     // Clear existing table data
     table.find("tr:gt(0)").remove();
 
@@ -66,6 +67,21 @@ function setTableElements(table, elements) {
     }
 }
 
-function showTable(bool = true) {
-    $("#results-table")[0].hidden = !bool;
+function changeResultsVisibility(showTable, showStatus) {
+    $("#results-table")[0].hidden = !showTable;
+    $("#results-status")[0].hidden = !showStatus;
+}
+
+function fetchRecs(page = 0) {
+    $.get("/recommendations", {page: page}, function (data) {
+        console.log(data);
+
+        setTableElements(data);
+
+        // Hide/show UI elements
+        let loadingStatus = $("#loading-recs")[0];
+        loadingStatus.hidden = true;
+
+        changeResultsVisibility(true, false);
+    });
 }
