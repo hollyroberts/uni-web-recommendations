@@ -1,3 +1,7 @@
+import pandas as pd
+import numpy as np
+from scipy.sparse.linalg import svds
+
 import sqlite3
 import re
 from collections import OrderedDict
@@ -91,7 +95,7 @@ class Database:
                 # into movie id --> [title, genres]
                 results[movie_id] = [results[movie_id], genres]
 
-        return list(results.values())
+        return list(results.values()[:cls.MAX_NUMBER_OF_RESULTS])
 
     @classmethod
     def get_users(cls):
@@ -108,6 +112,33 @@ class Database:
                 "id": int(user_id),
                 "name": result[1]
             }
+
+    # noinspection PyPep8Naming
+    @classmethod
+    def get_reccs(cls, user_id: int, page: int = 0):
+        with sqlite3.connect("database.db") as db:
+            # Get movies from SQL query
+            movie_data = pd.read_sql("SELECT user_id, movie_id, rating_score FROM ratings", db)
+
+        # Setup data frames
+        ratings_mean_count = pd.DataFrame(movie_data.groupby('movie_id')['rating_score'].mean())
+        ratings_mean_count['rating_counts'] = pd.DataFrame(movie_data.groupby('movie_id')['rating_score'].count())
+
+        R_df = movie_data.pivot(index='user_id', columns='movie_id', values='rating_score').fillna(0)
+        R = R_df.values
+
+        # Decompose
+        user_ratings_mean = np.mean(R, axis=1)
+        R_demeaned = R - user_ratings_mean.reshape(-1, 1)
+        U, sigma, Vt = svds(R_demeaned, k=20)
+
+        predicted_ratings = np.dot(np.dot(U, np.diag(sigma)), Vt) + user_ratings_mean.reshape(-1, 1)
+        preds_df = pd.DataFrame(predicted_ratings, columns=R_df.columns)
+
+        # Sort row descending and retrieve first X results
+        ratings_for_user = preds_df.sort_values(by=user_id, ascending=False, axis=1)
+        ratings_for_user = ratings_for_user.iloc[user_id:user_id + 1, :cls.MAX_NUMBER_OF_RESULTS]
+        print(ratings_for_user)
 
     # Private functions
     @classmethod
