@@ -72,21 +72,22 @@ def get_reccs():
 
     return jsonify(Database.get_reccs(session['user']['id'], page))
 
-@app.route("/recommend_movie", methods=['POST'])
+@app.route("/update_recommendation", methods=['POST'])
 def update_recc():
     if 'user' not in session:
         return redirect('user.html')
 
     user_id = session['user']['id']
-    movie_id = request.form['movie_id']
-    rating = request.form['rating']
+    movie_id = int(request.form['movie_id'])
+    rating = float(request.form['rating'])
 
     # Validate rating
     if rating < 0.5 or rating > 5.0 or rating % 0.5 != 0:
         return abort(400)
 
-    pass
-    # TODO
+    # TODO update DB
+
+    return '', 200
 
 if __name__ == '__main__':
     app.secret_key = 'Movies'

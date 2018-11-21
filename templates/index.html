@@ -5,7 +5,11 @@
         <title>Movie recommendations</title>
     </head>
     <body onload="fetchRecs(0);">
-    <span></span>
+
+    <div hidden class="alert alert-success" id="success-alert">
+        <button type="button" class="close" data-dismiss="alert">x</button>
+        <div id="alert-text">Test</div>
+    </div>
 
     <form id="search-movie" onsubmit="event.preventDefault(); searchMovie()">
         <label for="search-movie">Search movies:</label>

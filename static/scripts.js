@@ -72,7 +72,7 @@ function setTableElements(elements) {
             appendStr += "<td>" + movieGenres.join(", ") + "</td>";
         }
 
-        appendStr += `<td><select class="form-control" onchange="updateRating(${movieId}, this.value);" onfocus="this.selected = 'No rating'">`;
+        appendStr += `<td><select class="form-control" onchange="updateRating(${movieId}, '${movieTitle}', this.value);" onfocus="this.selected = 'No rating'">`;
         appendStr += `<option value="" selected disabled hidden>No rating</option>`;
 
         for (let rating = 0.5; rating <= 5; rating += 0.5) {
@@ -122,8 +122,27 @@ function fetchRecs(page = 0) {
     });
 }
 
-function updateRating(movieID, rating) {
-    alert(movieID + " - " + rating);
+function updateRating(movieID, movieTitle, rating) {
+    let postData = {
+        movie_id: movieID,
+        rating: rating
+    };
+
+    // Send AJAX request
+    // noinspection JSUnusedLocalSymbols
+    $.post("/update_recommendation", postData, function (_, status) {
+        if (status !== "success") {
+            alert("Error updating rating - this should never happen");
+            return;
+        }
+
+        let alertContainer = $("#success-alert");
+        $("#alert-text")[0].innerHTML = `Rating for "${movieTitle}" updated to ${rating}/5`;
+
+        alertContainer.fadeTo(2000, 500).slideUp(500, function () {
+            alertContainer.slideUp(500);
+        });
+    });
 }
 
 function displayLoadingMessage() {
