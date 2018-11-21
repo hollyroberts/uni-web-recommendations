@@ -95,6 +95,10 @@ class Database:
         starting_movie = page * cls.MAX_NUMBER_OF_RESULTS
         movie_ids = list(movie_ids)[starting_movie: starting_movie + cls.MAX_NUMBER_OF_RESULTS]
 
+        if recommend:
+            movie_reccs = cls.get_all_user_reccs(user_id)
+            movie_ids = list(int(movie_id) for movie_id in movie_reccs if movie_id in movie_ids)
+
         return cls.get_movies(movie_ids, user_id, num_movies, starting_movie)
 
     @classmethod
@@ -164,9 +168,9 @@ class Database:
             movie_data = cls._add_extra_info(movie_data, user_id)
 
         data_to_send = []
-        for (key, value) in movie_data.items():
-            item = [key]
-            item.extend(value)
+        for movie_id in list_of_ids:
+            item = [movie_id]
+            item.extend(movie_data[movie_id])
             data_to_send.append(item)
 
         max_pages = math.ceil(num_movies / cls.MAX_NUMBER_OF_RESULTS)
