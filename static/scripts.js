@@ -26,21 +26,20 @@ function searchMovie(page = 0) {
         recHeader.hidden = true;
         searchHeader.hidden = false;
 
-        // Update status
-        if (data.length === 0) {
-            setStatus("<h4>No results found for \"" + searchStr + "\"</h4>");
-            changeResultsVisibility(false, true);
-            return;
-        }
-
         maxPage = data['maxPages'];
         let numberOfResults = data['numMovies'];
 
-        setStatus("<p>" + numberOfResults + (numberOfResults === 1 ? " result" : " results") + " found</p>");
+        // Update status
+        if (numberOfResults === 0) {
+            changeResultsVisibility(false, "<h4>No results found for \"" + searchStr + "\"</h4>");
+            return;
+        }
+
+        let statusStr = "<p>" + numberOfResults + (numberOfResults === 1 ? " result" : " results") + " found</p>";
 
         // Update table
         setTableElements(data['data']);
-        changeResultsVisibility(true, true);
+        changeResultsVisibility(true, statusStr);
         showPagination("searchMovie", page, maxPage)
     });
 }
@@ -93,26 +92,25 @@ function setTableElements(elements) {
     }
 }
 
-function changeResultsVisibility(showTable, showStatus) {
+function changeResultsVisibility(showTable, status) {
     $("#results-table")[0].hidden = !showTable;
-    $("#results-status")[0].hidden = !showStatus;
-}
 
-function setStatus(html) {
-    let status = $("#results-status")[0];
-    status.innerHTML = html;
+    let statusDOM = $("#results-status")[0];
+    if (status === false || status === undefined) {
+        statusDOM.hidden = true;
+    } else {
+        statusDOM.hidden = false;
+        statusDOM.innerHTML = status
+    }
 }
 
 function fetchRecs(page = 0) {
     displayLoadingMessage();
 
     $.get("/recommendations", {page: page}, function (data) {
-        console.log(data)
-
         // Check response metadata
         if (data.hasOwnProperty("noRatings")) {
-            setStatus("<h4>You haven't rated any movies yet, so no recommendations can be generated</h4>");
-            changeResultsVisibility(false, true);
+            changeResultsVisibility(false, "<h4>You haven't rated any movies yet, so no recommendations can be generated</h4>");
         }
 
         maxPage = data['maxPages'];
@@ -126,8 +124,7 @@ function fetchRecs(page = 0) {
 
 function displayLoadingMessage() {
     disablePagination();
-    setStatus("<p>Loading movies...</p>");
-    changeResultsVisibility(false, true);
+    changeResultsVisibility(false, "<p>Loading movies...</p>");
 }
 
 function disablePagination() {
