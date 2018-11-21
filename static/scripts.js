@@ -72,8 +72,8 @@ function setTableElements(elements) {
             appendStr += "<td>" + movieGenres.join(", ") + "</td>";
         }
 
-        appendStr += String.raw`<td><select class="form-control" onchange="this.form.submit();" onfocus="this.selected = 'No rating'">
-                <option value="" selected disabled hidden>No rating</option>`;
+        appendStr += `<td><select class="form-control" onchange="updateRating(${movieId}, this.value);" onfocus="this.selected = 'No rating'">`;
+        appendStr += `<option value="" selected disabled hidden>No rating</option>`;
 
         for (let rating = 0.5; rating <= 5; rating += 0.5) {
             appendStr += '<option value="' + rating + '"';
@@ -120,6 +120,10 @@ function fetchRecs(page = 0) {
         changeResultsVisibility(true, false);
         showPagination("fetchRecs", page, maxPage);
     });
+}
+
+function updateRating(movieID, rating) {
+    alert(movieID + " - " + rating);
 }
 
 function displayLoadingMessage() {
