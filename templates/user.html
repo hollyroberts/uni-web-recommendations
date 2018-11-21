@@ -5,9 +5,8 @@
         <title>Change user account</title>
     </head>
     <body>
+    <h1>Select account</h1>
     {% if users|length > 0 %}
-        <h1>Select account</h1>
-
         <form action="/select_user" method="post">
             <label>Choose user manually created: </label>
             <!--suppress JSUnusedGlobalSymbols -->
@@ -18,14 +17,18 @@
                 {% endfor %}
             </select>
         </form>
-
-        <form action="/select_user" method="post">
-            <label style="margin-top: 15px">OR, enter a user id manually (1 - {{ max_user_id }}): </label><br>
-            <!--suppress JSUnusedGlobalSymbols -->
-            <input type="number" name="user_id" min="1" max="{{ max_user_id }}"><br>
-            <input type="submit" value="Select user" class="btn btn-primary" style="margin-top: 8px;">
-        </form>
     {% endif %}
+
+    <form action="/select_user" method="post">
+        {% if users|length > 0 %}
+            <label style="margin-top: 15px">OR, enter a user id manually (1 - {{ max_user_id }}): </label><br>
+        {% else %}
+            <label>Enter a user id manually (1 - {{ max_user_id }}): </label><br>
+        {% endif %}
+        <!--suppress JSUnusedGlobalSymbols -->
+        <input type="number" name="user_id" min="1" max="{{ max_user_id }}"><br>
+        <input type="submit" value="Select user" class="btn btn-primary" style="margin-top: 8px;">
+    </form>
 
 
     <h1>Create user</h1>
