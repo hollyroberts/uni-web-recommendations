@@ -1,20 +1,8 @@
-import sqlite3, time
 from flask import Flask, session, render_template, redirect, request, jsonify, abort
 
 from db import Database
 
 app = Flask(__name__, static_url_path='/static')
-
-# start = time.time()
-# print("Loading movies")
-# movies = pandas.read_sql("SELECT id, title FROM movies", db)
-# print(f"Loaded movies in {round(time.time() - start, 1)} seconds")
-#
-# print("Loading ratings")
-# print("This will take a while (about a minute) and use a fair amount of memory (~3GB) while loading the database")
-# ratings = pandas.read_sql("SELECT user_id, movie_id, rating_score FROM ratings", db)
-# print(f"Loaded ratings in {round(time.time() - start, 1)} seconds")
-# print("Done")
 
 @app.route('/')
 @app.route('/index.html')
