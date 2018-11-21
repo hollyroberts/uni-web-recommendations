@@ -144,7 +144,7 @@ class Database:
 
         # Sort row descending and retrieve first X results
         ratings_for_user = preds_df.sort_values(by=user_id, ascending=False, axis=1)
-        ratings_for_user = ratings_for_user.iloc[user_id:user_id + 1, :cls.MAX_NUMBER_OF_RESULTS]
+        ratings_for_user = ratings_for_user.iloc[user_id:user_id + 1, page * cls.MAX_NUMBER_OF_RESULTS: (page + 1) * cls.MAX_NUMBER_OF_RESULTS]
         movie_reccs = ratings_for_user.columns.values
 
         return cls.get_movies(movie_reccs.tolist(), user_id, num_movies)

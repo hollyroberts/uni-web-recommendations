@@ -68,9 +68,9 @@ def get_reccs():
     if 'user' not in session:
         return redirect('user.html')
 
-    page = request.args.get('page')
+    page = int(request.args.get('page', 0))
 
-    return jsonify(Database.get_reccs(session['user']['id']))
+    return jsonify(Database.get_reccs(session['user']['id'], page))
 
 if __name__ == '__main__':
     app.secret_key = 'Movies'
