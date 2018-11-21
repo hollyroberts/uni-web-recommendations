@@ -19,7 +19,7 @@ db.execute("CREATE TABLE movies (id INTEGER PRIMARY KEY , title VARCHAR)")
 db.execute("CREATE TABLE genres (id INTEGER PRIMARY KEY , genre VARCHAR)")
 
 db.execute("CREATE TABLE movie_genres (movie_id INTEGER, genre_id INTEGER)")
-db.execute("CREATE TABLE ratings (user_id INTEGER, movie_id INTEGER, rating_score FLOAT)")
+db.execute("CREATE TABLE ratings (user_id INTEGER, movie_id INTEGER, rating_score FLOAT, UNIQUE (user_id, movie_id) ON CONFLICT REPLACE)")
 
 # Go through movies.csv
 with open(os.path.join(MVLENS_FOLDER, "movies.csv"), 'r', encoding="UTF-8") as file:

@@ -176,6 +176,16 @@ class Database:
         with sqlite3.connect(cls.DATABASE) as db:
             return db.execute("SELECT COUNT(*) FROM users").fetchone()[0]
 
+    @classmethod
+    def update_rating(cls, user_id: int, movie_id: int, rating: float):
+        with sqlite3.connect(cls.DATABASE) as db:
+            exists = db.execute("SELECT COUNT(*) FROM ratings WHERE user_id = ? AND movie_id = ?", (user_id, movie_id)).fetchone()[0] == 1
+
+            if exists:
+                db.execute("UPDATE ratings SET rating_score = ? WHERE user_id = ? AND movie_id = ?", (rating, user_id, movie_id))
+            else:
+                db.execute("INSERT INTO ratings (user_id, movie_id, rating_score) VALUES (?, ?, ?)", (user_id, movie_id, rating))
+
     # Private functions
     @classmethod
     def _get_regex_str(cls, string: str):

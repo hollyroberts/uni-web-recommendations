@@ -73,7 +73,7 @@ def update_recc():
     if rating < 0.5 or rating > 5.0 or rating % 0.5 != 0:
         return abort(400)
 
-    # TODO update DB
+    Database.update_rating(user_id, movie_id, rating)
 
     return '', 200
 
