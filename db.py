@@ -97,7 +97,9 @@ class Database:
 
         if recommend:
             movie_reccs = cls.get_all_user_reccs(user_id)
-            movie_ids = list(int(movie_id) for movie_id in movie_reccs if movie_id in movie_ids)
+
+            if not isinstance(movie_reccs, dict):
+                movie_ids = list(int(movie_id) for movie_id in movie_reccs if movie_id in movie_ids)
 
         return cls.get_movies(movie_ids, user_id, num_movies, starting_movie)
 
@@ -130,9 +132,6 @@ class Database:
             movie_data = pd.read_sql("SELECT user_id, movie_id, rating_score FROM ratings", db)
 
         # Setup data frames
-        ratings_mean_count = pd.DataFrame(movie_data.groupby('movie_id')['rating_score'].mean())
-        ratings_mean_count['rating_counts'] = pd.DataFrame(movie_data.groupby('movie_id')['rating_score'].count())
-
         R_df = movie_data.pivot(index='user_id', columns='movie_id', values='rating_score').fillna(0)
         R = R_df.values
 
@@ -145,16 +144,18 @@ class Database:
         preds_df = pd.DataFrame(predicted_ratings, columns=R_df.columns)
 
         # Sort row descending and retrieve row of results
-        ratings_for_user = preds_df.sort_values(by=user_id, ascending=False, axis=1)
-        ratings_for_user = ratings_for_user.iloc[user_id:user_id + 1, :]
+        ratings_for_user = preds_df.sort_values(by=user_id - 1, ascending=False, axis=1)
+        ratings_for_user = ratings_for_user.iloc[user_id - 1:user_id, :]
 
         return ratings_for_user.columns.values
 
     @classmethod
     def get_reccs(cls, user_id: int, page: int = 0):
         full_reccs = cls.get_all_user_reccs(user_id)
-        num_movies = len(full_reccs)
+        if isinstance(full_reccs, dict):
+            return full_reccs
 
+        num_movies = len(full_reccs)
         starting_movie = page * cls.MAX_NUMBER_OF_RESULTS
         page_reccs = full_reccs[starting_movie: starting_movie + cls.MAX_NUMBER_OF_RESULTS]
 
