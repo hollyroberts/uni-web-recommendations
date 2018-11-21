@@ -16,16 +16,10 @@ function searchMovie(page = 0) {
         page: page
     };
 
+    showSearchHeader();
+
     // Send AJAX request
     $.get("/search_movies", data, function (data) {
-        // Get DOM elements
-        let recHeader = $("#page-header-recommend")[0];
-        let searchHeader = $("#page-header-search")[0];
-
-        // Update header and button
-        recHeader.hidden = true;
-        searchHeader.hidden = false;
-
         maxPage = data['maxPages'];
         let totResults = data['totMovies'];
         let startingMovie = data['startingMovie'];
@@ -107,6 +101,7 @@ function changeResultsVisibility(showTable, status) {
 
 function fetchRecs(page = 0) {
     displayLoadingMessage();
+    showSearchHeader(false);
 
     $.get("/recommendations", {page: page}, function (data) {
         // Check response metadata
@@ -177,4 +172,14 @@ function showPagination(updateFunction, curPage, maxPage) {
 
 
     $("#pagination")[0].innerHTML = htmlStr;
+}
+
+function showSearchHeader(bool = true) {
+    // Get DOM elements
+    let recHeader = $("#page-header-recommend")[0];
+    let searchHeader = $("#page-header-search")[0];
+
+    // Update header and button
+    recHeader.hidden = bool;
+    searchHeader.hidden = !bool;
 }
