@@ -74,7 +74,7 @@ class Database:
             }
 
     @classmethod
-    def search_movies(cls, search_str, user_id):
+    def search_movies(cls, search_str, user_id, page: int = 0):
         individual_words = list(cls._get_regex_str(word) for word in search_str.split() if word not in cls.COMMON_WORDS)
 
         with sqlite3.connect(cls.DATABASE) as db:
@@ -90,9 +90,11 @@ class Database:
                 word_match_results = db.execute("SELECT id FROM movies WHERE " + query, individual_words)
                 movie_ids.update(x[0] for x in word_match_results.fetchall())
 
+        # Trim to page
         num_movies = len(movie_ids)
+        movie_ids = list(movie_ids)[page * cls.MAX_NUMBER_OF_RESULTS: (page + 1) * cls.MAX_NUMBER_OF_RESULTS]
 
-        return cls.get_movies(list(movie_ids), user_id, num_movies)
+        return cls.get_movies(movie_ids, user_id, num_movies)
 
     @classmethod
     def get_users(cls):

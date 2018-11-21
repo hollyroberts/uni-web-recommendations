@@ -57,8 +57,9 @@ def search_movies():
     # Retrieve args from request
     title = request.args.get('title')
     recommend = request.args.get('recommend')
+    page = int(request.args.get('page', 0))
 
-    results = Database.search_movies(title, session['user']['id'])
+    results = Database.search_movies(title, session['user']['id'], page)
 
     return jsonify(results)
 

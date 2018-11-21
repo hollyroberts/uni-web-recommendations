@@ -12,13 +12,12 @@ function searchMovie(page = 0) {
 
     let data = {
         title: searchStr,
-        recommend: recommend
+        recommend: recommend,
+        page: page
     };
 
     // Send AJAX request
     $.get("/search_movies", data, function (data) {
-        console.log(data);
-
         // Get DOM elements
         let recHeader = $("#page-header-recommend")[0];
         let searchHeader = $("#page-header-search")[0];
@@ -108,6 +107,8 @@ function fetchRecs(page = 0) {
     displayLoadingMessage();
 
     $.get("/recommendations", {page: page}, function (data) {
+        console.log(data)
+
         // Check response metadata
         if (data.hasOwnProperty("noRatings")) {
             setStatus("<h4>You haven't rated any movies yet, so no recommendations can be generated</h4>");
@@ -148,7 +149,7 @@ function showPagination(updateFunction, curPage, maxPage) {
 
     // Next
     if (curPage < maxPage) {
-        htmlStr += `<li><a onclick="${updateFunction}${curPage + 1})" role="button"><span class="glyphicon glyphicon-chevron-right"></span></a></li>`;
+        htmlStr += `<li><a onclick="${updateFunction}(${curPage + 1})" role="button"><span class="glyphicon glyphicon-chevron-right"></span></a></li>`;
     } else {
         htmlStr += `<li class="disabled"><a><span class="glyphicon glyphicon-chevron-right"></span></a></li>`;
     }
