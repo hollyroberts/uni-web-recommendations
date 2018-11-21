@@ -1,5 +1,5 @@
 import sqlite3, time
-from flask import Flask, session, render_template, redirect, request, jsonify
+from flask import Flask, session, render_template, redirect, request, jsonify, abort
 
 from db import Database
 
@@ -49,7 +49,7 @@ def clear_session():
 
     return redirect('user.html')
 
-@app.route("/search_movies", methods=['GET'])
+@app.route("/search_movies")
 def search_movies():
     if 'user' not in session:
         return redirect('user.html')
@@ -63,7 +63,7 @@ def search_movies():
 
     return jsonify(results)
 
-@app.route("/recommendations", methods=['GET'])
+@app.route("/recommendations")
 def get_reccs():
     if 'user' not in session:
         return redirect('user.html')
@@ -71,6 +71,22 @@ def get_reccs():
     page = int(request.args.get('page', 0))
 
     return jsonify(Database.get_reccs(session['user']['id'], page))
+
+@app.route("/recommend_movie", methods=['POST'])
+def update_recc():
+    if 'user' not in session:
+        return redirect('user.html')
+
+    user_id = session['user']['id']
+    movie_id = request.form['movie_id']
+    rating = request.form['rating']
+
+    # Validate rating
+    if rating < 0.5 or rating > 5.0 or rating % 0.5 != 0:
+        return abort(400)
+
+    pass
+    # TODO
 
 if __name__ == '__main__':
     app.secret_key = 'Movies'
