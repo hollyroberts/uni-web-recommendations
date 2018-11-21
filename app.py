@@ -1,8 +1,12 @@
-from flask import Flask, session, render_template, redirect, request, jsonify, abort
-
+from flask import Flask, session, render_template, redirect, request, jsonify, abort, send_from_directory
+import os
 from db import Database
 
 app = Flask(__name__, static_url_path='/static')
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
 
 @app.route('/')
 @app.route('/index.html')
