@@ -174,7 +174,7 @@ class Database:
             item.extend(movie_data[movie_id])
             data_to_send.append(item)
 
-        max_pages = math.ceil(num_movies / cls.MAX_NUMBER_OF_RESULTS)
+        max_pages = math.ceil(num_movies / cls.MAX_NUMBER_OF_RESULTS) - 1
 
         return {"maxPages": max_pages,
                 "totMovies": num_movies,
