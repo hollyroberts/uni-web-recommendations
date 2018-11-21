@@ -74,7 +74,7 @@ class Database:
             }
 
     @classmethod
-    def search_movies(cls, search_str, user_id, page: int = 0):
+    def search_movies(cls, search_str, user_id, page: int = 0, recommend: bool = True):
         individual_words = list(cls._get_regex_str(word) for word in search_str.split() if word not in cls.COMMON_WORDS)
 
         with sqlite3.connect(cls.DATABASE) as db:
@@ -115,7 +115,7 @@ class Database:
 
     # noinspection PyPep8Naming
     @classmethod
-    def get_reccs(cls, user_id: int, page: int = 0):
+    def get_all_user_reccs(cls, user_id):
         with sqlite3.connect(cls.DATABASE) as db:
             # Check if we've rated anything first
             has_ratings = db.execute("SELECT COUNT(*) FROM ratings WHERE user_id = ?", (user_id,)).fetchone()
@@ -124,9 +124,6 @@ class Database:
 
             # Get movies from SQL query
             movie_data = pd.read_sql("SELECT user_id, movie_id, rating_score FROM ratings", db)
-
-            # Number of movies
-            num_movies = db.execute("SELECT COUNT(*) FROM movies").fetchone()[0]
 
         # Setup data frames
         ratings_mean_count = pd.DataFrame(movie_data.groupby('movie_id')['rating_score'].mean())
@@ -143,13 +140,21 @@ class Database:
         predicted_ratings = np.dot(np.dot(U, np.diag(sigma)), Vt) + user_ratings_mean.reshape(-1, 1)
         preds_df = pd.DataFrame(predicted_ratings, columns=R_df.columns)
 
-        # Sort row descending and retrieve page of results
+        # Sort row descending and retrieve row of results
         ratings_for_user = preds_df.sort_values(by=user_id, ascending=False, axis=1)
-        starting_movie = page * cls.MAX_NUMBER_OF_RESULTS
-        ratings_for_user = ratings_for_user.iloc[user_id:user_id + 1, starting_movie: starting_movie + cls.MAX_NUMBER_OF_RESULTS]
-        movie_reccs = ratings_for_user.columns.values
+        ratings_for_user = ratings_for_user.iloc[user_id:user_id + 1, :]
 
-        return cls.get_movies(movie_reccs.tolist(), user_id, num_movies, starting_movie)
+        return ratings_for_user.columns.values
+
+    @classmethod
+    def get_reccs(cls, user_id: int, page: int = 0):
+        full_reccs = cls.get_all_user_reccs(user_id)
+        num_movies = len(full_reccs)
+
+        starting_movie = page * cls.MAX_NUMBER_OF_RESULTS
+        page_reccs = full_reccs[starting_movie: starting_movie + cls.MAX_NUMBER_OF_RESULTS]
+
+        return cls.get_movies(page_reccs.tolist(), user_id, num_movies, starting_movie)
 
     @classmethod
     def get_movies(cls, list_of_ids, user_id, num_movies, starting_movie):
