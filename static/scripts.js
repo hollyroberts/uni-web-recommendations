@@ -27,15 +27,16 @@ function searchMovie(page = 0) {
         searchHeader.hidden = false;
 
         maxPage = data['maxPages'];
-        let numberOfResults = data['numMovies'];
+        let totResults = data['totMovies'];
+        let startingMovie = data['startingMovie'];
 
         // Update status
-        if (numberOfResults === 0) {
+        if (totResults === 0) {
             changeResultsVisibility(false, "<h4>No results found for \"" + searchStr + "\"</h4>");
             return;
         }
 
-        let statusStr = "<p>" + numberOfResults + (numberOfResults === 1 ? " result" : " results") + " found</p>";
+        let statusStr = `<p>Showing movies ${startingMovie + 1}-${startingMovie + data['data'].length} out of ${totResults}` + (totResults === 1 ? " result" : " results") + " found</p>";
 
         // Update table
         setTableElements(data['data']);
