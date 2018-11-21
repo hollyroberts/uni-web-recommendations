@@ -135,7 +135,7 @@ function updateRating(movieID, movieTitle, rating) {
         let alertContainer = $("#success-alert");
         $("#alert-text")[0].innerHTML = `Rating for "${movieTitle}" updated to ${rating}/5`;
 
-        alertContainer.fadeTo(2000, 500).slideUp(500, function () {
+        alertContainer.fadeTo(2500, 500).slideUp(500, function () {
             alertContainer.slideUp(500);
         });
     });
