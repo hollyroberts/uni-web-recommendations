@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang=" {{ g.locale }}">
 
 <link rel="shortcut icon" href="/static/favicon.ico">
 
@@ -14,7 +14,7 @@
                 <span class="icon-bar"></span>
             </button>
             {% if 'user' in session %}
-                <a class="navbar-brand" href="/index.html">Movie Recommendations</a>
+                <a class="navbar-brand" href="/index.html">{{ _('Movie recommendations') }}</a>
             {% endif %}
         </div>
 
@@ -23,21 +23,21 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if 'user' in session %}
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User: {{ session['user']['name'] }} <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ _('User: ') }}{{ session['user']['name'] }} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/user_ratings.html">View ratings</a></li>
+                            <li><a href="/user_ratings.html">{{ _('View ratings') }}</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/user.html">New/change user</a></li>
-                            <li><a href="/clear_session">Clear session data</a></li>
+                            <li><a href="/user.html">{{ _('New/change user') }}</a></li>
+                            <li><a href="/clear_session">{{ _('Clear session data') }}</a></li>
                         </ul>
                     </li>
                 {% endif %}
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;Language<span class="caret"></span>
-                    </a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">   {{ _('Language') }}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>TODO</li>
+                        {% for key, value in g.languages.items() %}
+                                <li><a href="" style="display: inline-block"><img src="/static/flag-{{ key }}.png" width="60" height="40">&nbsp;&nbsp;&nbsp;{{ value }}</a></li>
+                        {% endfor %}
                     </ul>
                 </li>
             </ul>

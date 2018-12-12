@@ -2,16 +2,16 @@
 
 {% block container %}
     <head>
-        <title>Change user account</title>
+        <title>{{ _('Change user account') }}</title>
     </head>
     <body>
-    <h1>Select account</h1>
+    <h1>{{ _('Select account') }}</h1>
     {% if users|length > 0 %}
         <form action="/select_user" method="post">
-            <label>Choose user manually created: </label>
+            <label>{{ _('Choose user manually created:') }} </label>
             <!--suppress JSUnusedGlobalSymbols -->
-            <select class="form-control" onchange="this.form.submit();" onfocus="this.selected = 'Choose user'" name="user_id" required title="Choose user">
-                <option value="" selected disabled hidden>Choose user</option>
+            <select class="form-control" onchange="this.form.submit();" onfocus="this.selected = '{{ _('Choose user') }}'" name="user_id" required title="Choose user">
+                <option value="" selected disabled hidden>{{ _('Choose user') }}</option>
                 {% for user in users %}
                     <option value="{{ user[0] }}">{{ user[1] }}</option>
                 {% endfor %}
@@ -21,22 +21,22 @@
 
     <form action="/select_user" method="post">
         {% if users|length > 0 %}
-            <label style="margin-top: 15px">OR, enter a user id manually (1 - {{ max_user_id }}): </label><br>
+            <label style="margin-top: 15px">{{ _('OR, enter a user id manually (1 - %(max_id)s): ', max_id=max_user_id) }}</label><br>
         {% else %}
-            <label>Enter a user id manually (1 - {{ max_user_id }}): </label><br>
+            <label>{{ _('Enter a user id manually (1 - %(max_id)s): ', max_id=max_user_id) }}</label><br>
         {% endif %}
         <!--suppress JSUnusedGlobalSymbols -->
         <input type="number" name="user_id" min="1" max="{{ max_user_id }}"><br>
-        <input type="submit" value="Select user" class="btn btn-primary" style="margin-top: 8px;">
+        <input type="submit" value="{{ _('Select user') }}" class="btn btn-primary" style="margin-top: 8px;">
     </form>
 
 
     <h1>Create user</h1>
 
     <form action="/create_user" method="post">
-        <label for="usernameLabel">Username:</label>
-        <input class="form-control" name="username" placeholder="Enter username" required>
-        <button type="submit" class="btn btn-primary" style="margin-top: 10px">Create Profile</button>
+        <label for="usernameLabel">{{ _('Username:') }}</label>
+        <input class="form-control" name="username" placeholder="{{ _('Enter username') }}" required>
+        <button type="submit" class="btn btn-primary" style="margin-top: 10px">{{ _('Create profile') }}</button>
     </form>
     </body>
 {% endblock %}

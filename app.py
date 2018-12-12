@@ -1,9 +1,33 @@
-from flask import Flask, session, render_template, redirect, request, jsonify, abort, send_from_directory
+from flask import Flask, session, render_template, redirect, request, jsonify, abort, send_from_directory, g
+from flask_babel import Babel
 import os
 from db import Database
 
 app = Flask(__name__, static_url_path='/static')
+babel = Babel(app)
 
+LANGUAGES = {
+    'en': 'English',
+    'es': 'Español',
+    'se': 'Svenska'
+}
+
+# Babel functions
+@babel.localeselector
+def get_locale():
+    # if a user is logged in, use the locale from the user settings
+    if 'locale' in session:
+        return session['locale']
+
+    # otherwise try to guess the language from the user accept header the browser transmits
+    return request.accept_languages.best_match(LANGUAGES.keys())
+
+@app.before_request
+def set_locale():
+    g.locale = get_locale()
+    g.languages = LANGUAGES
+
+# Routing functions
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')

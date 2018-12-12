@@ -2,7 +2,7 @@
 
 {% block container %}
     <head>
-        <title>Movie recommendations</title>
+        <title>{{ _('Movie Recommendations') }}</title>
     </head>
     <body onload="fetchRatings();">
 
@@ -11,18 +11,18 @@
         <div id="alert-text">Test</div>
     </div>
 
-    <h3>Rated movies</h3>
+    <h3>{{ _('Rated movies') }}</h3>
 
     <div style="padding-top: 5px">
         <div id="results-status">
-            <p>Loading results...</p>
+            <p>{{ _('Loading ratings...') }}</p>
         </div>
 
         <table hidden id="results-table" class="table table-striped">
             <tr>
-                <th>Movie</th>
-                <th>Genres</th>
-                <th>Your Rating</th>
+                <th>{{ _('Movie') }}</th>
+                <th>{{ _('Genres') }}</th>
+                <th>{{ _('Your Rating') }}</th>
                 <th></th>
             </tr>
         </table>

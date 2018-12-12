@@ -2,7 +2,7 @@
 
 {% block container %}
     <head>
-        <title>Movie recommendations</title>
+        <title>{{ ('Movie Recommendations') }}</title>
     </head>
     <body onload="fetchRecs(0);">
 
@@ -12,37 +12,37 @@
     </div>
 
     <form id="search-movie" onsubmit="event.preventDefault(); searchMovie()">
-        <label for="search-movie">Search movies:</label>
+        <label for="search-movie">{{ _('Search movies:') }}</label>
         <input id="search-movie-input" name="search-movie" class="form-control" style="margin-bottom: 10px;" autofocus
-               placeholder="Search for a movie...">
+               placeholder="{{ _('Search for a movie...') }}">
 
-        <input id="recommend-search-checkbox" type="checkbox" name="recommend-search" value="recommend-search" onclick="updateSearchSettings(true);" checked> Sort results by those recommended to me<br>
-        <input id="remove-rated-checkbox" type="checkbox" name="remove-rated-checkbox" value="remove-rated-checkbox" onclick="updateSearchSettings(false);" checked> Include movies that I've rated<br>
+        <input id="recommend-search-checkbox" type="checkbox" name="recommend-search" value="recommend-search" onclick="updateSearchSettings(true);" checked> {{ _('Sort results by those recommended to me') }}<br>
+        <input id="remove-rated-checkbox" type="checkbox" name="remove-rated-checkbox" value="remove-rated-checkbox" onclick="updateSearchSettings(false);" checked> {{ _("Include movies that I've rated") }}<br>
     </form>
 
     <hr>
 
     <div id="page-header-recommend">
-        <h3>Recommendations</h3>
+        <h3>{{ _('Recommendations') }}</h3>
     </div>
 
     <div hidden id="page-header-search" style="vertical-align: center;">
         <button hidden type="button" class="btn btn-light" onclick="back();">
             <span hidden class="glyphicon glyphicon-arrow-left"></span>
         </button>
-        <h3 id="results-title" style="display: inline-block; vertical-align: -4px; margin-top: 0; margin-left: 5px;">Search Results</h3>
+        <h3 id="results-title" style="display: inline-block; vertical-align: -4px; margin-top: 0; margin-left: 5px;">{{ _('Search results') }}</h3>
     </div>
 
     <div style="padding-top: 5px">
         <div id="results-status">
-            <p>Loading recommendations...</p>
+            <p>{{ _('Loading recommendations...') }}</p>
         </div>
 
         <table hidden id="results-table" class="table table-striped">
             <tr>
-                <th>Movie</th>
-                <th>Genres</th>
-                <th>Your Rating</th>
+                <th>{{ _('Movie') }}</th>
+                <th>{{ _('Genres') }}</th>
+                <th>{{ _('Your Rating') }}</th>
             </tr>
         </table>
     </div>
