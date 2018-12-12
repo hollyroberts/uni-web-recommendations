@@ -4,7 +4,7 @@
     <head>
         <title>{{ _('Movie Recommendations') }}</title>
     </head>
-    <body onload="fetchTranslations(); fetchRatings();">
+    <body onload="fetchTranslations(fetchRatings);">
 
     <div hidden class="alert alert-success" id="success-alert">
         <button type="button" class="close" data-dismiss="alert">x</button>

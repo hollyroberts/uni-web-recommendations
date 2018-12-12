@@ -41,7 +41,10 @@ def translations():
         "have_not_rated": gettext("You haven't rated any movies"),
         "error_deleting": gettext("Error deleting rating - this should never happen"),
         "error_rating": gettext("Error updating rating - this should never happen"),
-        "loading_movie": gettext("Loading movies...")
+        "loading_movies": gettext("Loading movies..."),
+        "rating_deleted": gettext('Rating for "*" deleted'),
+        "rating_updated": gettext('Rating for "*" updated to &/5'),
+        "no_ratings_so_no_reccs": gettext("You haven't rated any movies yet, so no recommendations can be generated")
     })
 
 # HTML pages
@@ -110,14 +113,7 @@ def get_reccs():
     page = int(request.args.get('page', 0))
     include_rated_movies = request.args.get('include_rated_movies') == 'true'
 
-    result = {
-        "translations": {
-            "no_ratings": gettext("You haven't rated any movies yet, so no recommendations can be generated")
-        },
-        "reccs": Database.get_reccs(session['user']['id'], page, include_rated_movies)
-    }
-
-    return jsonify(result)
+    return jsonify(Database.get_reccs(session['user']['id'], page, include_rated_movies))
 
 @app.route("/ratings")
 def get_ratings():

@@ -4,9 +4,10 @@ let updatePage = 0;
 
 let translations = {};
 
-function fetchTranslations() {
+function fetchTranslations(next_func) {
     $.get("/get_translations", {}, function(data) {
         translations = data;
+        next_func()
     });
 }
 
@@ -132,13 +133,10 @@ function fetchRecs(page = 0) {
         include_rated_movies: include_rated_movies
     };
 
-    $.get("/recommendations", data, function (response) {
-        let data = response['reccs'];
-        let translations = response['translations'];
-
+    $.get("/recommendations", data, function (data) {
         // Check response metadata
         if (data.hasOwnProperty("noRatings")) {
-            changeResultsVisibility(false, "<h4>" + translations['no_ratings'] + "</h4>");
+            changeResultsVisibility(false, "<h4>" + translations['no_ratings_so_no_reccs'] + "</h4>");
         }
 
         maxPage = data['maxPages'];
@@ -182,8 +180,7 @@ function updateRating(movieID, movieTitle, rating) {
         }
 
         let alertContainer = $("#success-alert");
-        // TODO
-        $("#alert-text")[0].innerHTML = `Rating for "${movieTitle}" updated to ${rating}/5`;
+        $("#alert-text")[0].innerHTML = translations['rating_updated'].replace("*", movieTitle).replace("&", rating);
 
         alertContainer.fadeTo(2500, 500).slideUp(500, function () {
             alertContainer.slideUp(500);
@@ -208,8 +205,7 @@ function deleteRating(movieID, movieTitle) {
         });
 
         let alertContainer = $("#success-alert");
-        // TODO
-        $("#alert-text")[0].innerHTML = `Rating for "${movieTitle}" deleted`;
+        $("#alert-text")[0].innerHTML = translations['rating_deleted'].replace("*", movieTitle);
 
         alertContainer.fadeTo(2500, 500).slideUp(500, function () {
             alertContainer.slideUp(500);
@@ -219,7 +215,7 @@ function deleteRating(movieID, movieTitle) {
 
 function displayLoadingMessage() {
     disablePagination();
-    changeResultsVisibility(false, "<p>" + translations['loading_movie'] + "</p>");
+    changeResultsVisibility(false, "<p>" + translations['loading_movies'] + "</p>");
 }
 
 function disablePagination() {

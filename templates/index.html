@@ -5,7 +5,7 @@
         <title>{{ ('Movie Recommendations') }}</title>
     </head>
     {% block onload %}
-            <body onload="fetchTranslations(); fetchRecs(0);">
+            <body onload="fetchTranslations(fetchRecs);">
     {% endblock %}
 
     <div hidden class="alert alert-success" id="success-alert">
@@ -37,7 +37,7 @@
 
     <div style="padding-top: 5px">
         <div id="results-status">
-            <p>{{ _('Loading recommendations...') }}</p>
+            <p>{{ _('Loading movies...') }}</p>
         </div>
 
         <table hidden id="results-table" class="table table-striped">
