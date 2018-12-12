@@ -1,189 +1,190 @@
-# Translations template for PROJECT.
+# Northern Sami translations for PROJECT.
 # Copyright (C) 2018 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-12-12 21:45+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2018-12-12 21:59+0000\n"
+"Language: se\n"
+"Language-Team: se <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
+"Last-Translator: \n"
+"X-Generator: Poedit 2.2\n"
 
 #: app.py:38
 msgid "No genres"
-msgstr ""
+msgstr "Inga genrer"
 
 #: app.py:39
 msgid "No rating"
-msgstr ""
+msgstr "Ingen bedömning"
 
 #: app.py:40
 msgid "Delete"
-msgstr ""
+msgstr "Radera"
 
 #: app.py:41
 msgid "You haven't rated any movies"
-msgstr ""
+msgstr "Du har inte betygsatt några filmer"
 
 #: app.py:42
 msgid "Error deleting rating - this should never happen"
-msgstr ""
+msgstr "Ett fel vid borttagning av betyg - det borde aldrig hända"
 
 #: app.py:43
 msgid "Error updating rating - this should never happen"
-msgstr ""
+msgstr "Fel vid uppdatering av betyg - det borde aldrig hända"
 
 #: app.py:44 templates/index.html:40
 msgid "Loading movies..."
-msgstr ""
+msgstr "Laddar filmer..."
 
 #: app.py:45
 msgid "Rating for \"*\" deleted"
-msgstr ""
+msgstr "Betyg för \"*\" raderas"
 
 #: app.py:46
 msgid "Rating for \"*\" updated to &/5"
-msgstr ""
+msgstr "Betyg för \"*\" uppdaterad till & / 5"
 
 #: app.py:47
 msgid "You haven't rated any movies yet, so no recommendations can be generated"
-msgstr ""
+msgstr "Du har inte betygsatt några filmer ännu, så inga rekommendationer kan genereras"
 
 #: app.py:111
 #, python-format
 msgid "No results found for \"%(search_str)s\""
-msgstr ""
+msgstr "Inga resultat funna för \"%(search_str)s\""
 
 #: app.py:112
 #, python-format
 msgid "Showing movies %(start)s-%(end)s out of %(tot_results)s result found"
 msgid_plural "Showing movies %(start)s-%(end)s out of %(tot_results)s results found)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Visar filmer %(start)s - %(end)s av %(tot_results)s resultat hittades"
+msgstr[1] "Visar filmer %(start)s - %(end)s av %(tot_results)s resultat hittades"
 
 #: templates/base.html:17
 msgid "Movie recommendations"
-msgstr ""
+msgstr "Filmrekommendationer"
 
 #: templates/base.html:26
 msgid "User: "
-msgstr ""
+msgstr "Användare: "
 
 #: templates/base.html:28
 msgid "View ratings"
-msgstr ""
+msgstr "Visa betyg"
 
 #: templates/base.html:30
 msgid "New/change user"
-msgstr ""
+msgstr "Ny/ändra användare"
 
 #: templates/base.html:31
 msgid "Clear session data"
-msgstr ""
+msgstr "Rensa sessiondata"
 
 #: templates/base.html:36
 msgid "Language"
-msgstr ""
+msgstr "Språk"
 
 #: templates/index.html:17
 msgid "Search movies:"
-msgstr ""
+msgstr "Sök film:"
 
 #: templates/index.html:19
 msgid "Search for a movie..."
-msgstr ""
+msgstr "Sök efter en film..."
 
 #: templates/index.html:21
 msgid "Sort results by those recommended to me"
-msgstr ""
+msgstr "Sortera resultat av de som rekommenderas till mig"
 
 #: templates/index.html:22
 msgid "Include movies that I've rated"
-msgstr ""
+msgstr "Inkludera filmer som jag har betygsatt"
 
 #: templates/index.html:28
 msgid "Recommendations"
-msgstr ""
+msgstr "Rekommendationer"
 
 #: templates/index.html:35
 msgid "Search results"
-msgstr ""
+msgstr "Sökresultat"
 
 #: templates/index.html:45 templates/user_ratings.html:23
 msgid "Movie"
-msgstr ""
+msgstr "Film"
 
 #: templates/index.html:46 templates/user_ratings.html:24
 msgid "Genres"
-msgstr ""
+msgstr "Genrer"
 
 #: templates/index.html:47 templates/user_ratings.html:25
 msgid "Your Rating"
-msgstr ""
+msgstr "Ditt Betyg"
 
 #: templates/user.html:5
 msgid "Change user account"
-msgstr ""
+msgstr "Ändra användarkonto"
 
 #: templates/user.html:8
 msgid "Select account"
-msgstr ""
+msgstr "Välj konto"
 
 #: templates/user.html:11
 msgid "Choose user manually created:"
-msgstr ""
+msgstr "Välj användare manuellt skapad:"
 
 #: templates/user.html:13 templates/user.html:14
 msgid "Choose user"
-msgstr ""
+msgstr "Välj användare"
 
 #: templates/user.html:24
 #, python-format
 msgid "OR, enter a user id manually (1 - %(max_id)s): "
-msgstr ""
+msgstr "ELLER, ange ett användar-ID manuellt (1 -%(max_id)s): "
 
 #: templates/user.html:26
 #, python-format
 msgid "Enter a user id manually (1 - %(max_id)s): "
-msgstr ""
+msgstr "Ange ett användar-ID manuellt (1 -%(max_id)s): "
 
 #: templates/user.html:30
 msgid "Select user"
-msgstr ""
+msgstr "Välj användare"
 
 #: templates/user.html:34
 msgid "Create user"
-msgstr ""
+msgstr "Skapa användare"
 
 #: templates/user.html:37
 msgid "Username:"
-msgstr ""
+msgstr "Användarnamn:"
 
 #: templates/user.html:38
 msgid "Enter username"
-msgstr ""
+msgstr "Skriv in ditt användarnamn"
 
 #: templates/user.html:39
 msgid "Create profile"
-msgstr ""
+msgstr "Skapa profil"
 
 #: templates/user_ratings.html:5
 msgid "Movie Recommendations"
-msgstr ""
+msgstr "Filmrekommendationer"
 
 #: templates/user_ratings.html:14
 msgid "Rated movies"
-msgstr ""
+msgstr "Nominerade filmer"
 
 #: templates/user_ratings.html:18
 msgid "Loading ratings..."
-msgstr ""
-
+msgstr "Laddar betyg..."

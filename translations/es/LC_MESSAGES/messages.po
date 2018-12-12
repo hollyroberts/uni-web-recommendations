@@ -1,189 +1,194 @@
-# Translations template for PROJECT.
+# Spanish translations for PROJECT.
 # Copyright (C) 2018 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-12-12 21:45+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2018-12-12 21:45+0000\n"
+"Last-Translator: \n"
+"Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
+"X-Generator: Poedit 2.2\n"
 
 #: app.py:38
 msgid "No genres"
-msgstr ""
+msgstr "No genres"
 
 #: app.py:39
 msgid "No rating"
-msgstr ""
+msgstr "No evaluado"
 
 #: app.py:40
 msgid "Delete"
-msgstr ""
+msgstr "Borrar"
 
 #: app.py:41
 msgid "You haven't rated any movies"
-msgstr ""
+msgstr "No has clasificado ninguna película"
 
 #: app.py:42
 msgid "Error deleting rating - this should never happen"
-msgstr ""
+msgstr "Error al eliminar la calificación-esto nunca debe suceder"
 
 #: app.py:43
 msgid "Error updating rating - this should never happen"
-msgstr ""
+msgstr "Error al actualizar la calificación-esto nunca debe suceder"
 
 #: app.py:44 templates/index.html:40
 msgid "Loading movies..."
-msgstr ""
+msgstr "Cargando peliculas ..."
 
 #: app.py:45
 msgid "Rating for \"*\" deleted"
-msgstr ""
+msgstr "Calificación de \"*\" eliminado"
 
 #: app.py:46
 msgid "Rating for \"*\" updated to &/5"
-msgstr ""
+msgstr "Calificación de \"*\" actualizada a & / 5"
 
 #: app.py:47
 msgid "You haven't rated any movies yet, so no recommendations can be generated"
 msgstr ""
+"Aún no has calificado ninguna película, por lo que no se pueden generar "
+"recomendaciones"
 
 #: app.py:111
 #, python-format
 msgid "No results found for \"%(search_str)s\""
-msgstr ""
+msgstr "No se encontraron resultados para \"%(search_str)s\""
 
 #: app.py:112
 #, python-format
 msgid "Showing movies %(start)s-%(end)s out of %(tot_results)s result found"
 msgid_plural "Showing movies %(start)s-%(end)s out of %(tot_results)s results found)"
 msgstr[0] ""
+"Mostrando las películas %(start)s-%(end)s de %(tot_results)s resultado encontrado"
 msgstr[1] ""
+"Mostrando las películas %(start)s-%(end)s de %(tot_results)s resultados encontrados"
 
 #: templates/base.html:17
 msgid "Movie recommendations"
-msgstr ""
+msgstr "Recomendaciones de peliculas"
 
 #: templates/base.html:26
 msgid "User: "
-msgstr ""
+msgstr "Nombre de usuario: "
 
 #: templates/base.html:28
 msgid "View ratings"
-msgstr ""
+msgstr "Ver calificaciones"
 
 #: templates/base.html:30
 msgid "New/change user"
-msgstr ""
+msgstr "Nuevo/cambiar usuario"
 
 #: templates/base.html:31
 msgid "Clear session data"
-msgstr ""
+msgstr "Borrar datos de sesión"
 
 #: templates/base.html:36
 msgid "Language"
-msgstr ""
+msgstr "Idioma"
 
 #: templates/index.html:17
 msgid "Search movies:"
-msgstr ""
+msgstr "Buscar peliculas:"
 
 #: templates/index.html:19
 msgid "Search for a movie..."
-msgstr ""
+msgstr "Buscar una película..."
 
 #: templates/index.html:21
 msgid "Sort results by those recommended to me"
-msgstr ""
+msgstr "Ordenar los resultados por los recomendados para mí"
 
 #: templates/index.html:22
 msgid "Include movies that I've rated"
-msgstr ""
+msgstr "Incluir películas que he clasificado"
 
 #: templates/index.html:28
 msgid "Recommendations"
-msgstr ""
+msgstr "Recomendaciones"
 
 #: templates/index.html:35
 msgid "Search results"
-msgstr ""
+msgstr "Resultados de la búsqueda"
 
 #: templates/index.html:45 templates/user_ratings.html:23
 msgid "Movie"
-msgstr ""
+msgstr "Película"
 
 #: templates/index.html:46 templates/user_ratings.html:24
 msgid "Genres"
-msgstr ""
+msgstr "Géneros"
 
 #: templates/index.html:47 templates/user_ratings.html:25
 msgid "Your Rating"
-msgstr ""
+msgstr "Tu clasificación"
 
 #: templates/user.html:5
 msgid "Change user account"
-msgstr ""
+msgstr "Cambiar cuenta de usuario"
 
 #: templates/user.html:8
 msgid "Select account"
-msgstr ""
+msgstr "Seleccionar cuenta"
 
 #: templates/user.html:11
 msgid "Choose user manually created:"
-msgstr ""
+msgstr "Elegir usuario creado manualmente:"
 
 #: templates/user.html:13 templates/user.html:14
 msgid "Choose user"
-msgstr ""
+msgstr "Elegir usuario"
 
 #: templates/user.html:24
 #, python-format
 msgid "OR, enter a user id manually (1 - %(max_id)s): "
-msgstr ""
+msgstr "O, ingrese una identificación de usuario manualmente (1 - %(max_id)s): "
 
 #: templates/user.html:26
 #, python-format
 msgid "Enter a user id manually (1 - %(max_id)s): "
-msgstr ""
+msgstr "Ingrese una identificación de usuario manualmente (1 - %(max_id)s): "
 
 #: templates/user.html:30
 msgid "Select user"
-msgstr ""
+msgstr "Seleccionar usuario"
 
 #: templates/user.html:34
 msgid "Create user"
-msgstr ""
+msgstr "Crear usuario"
 
 #: templates/user.html:37
 msgid "Username:"
-msgstr ""
+msgstr "Nombre de usuario:"
 
 #: templates/user.html:38
 msgid "Enter username"
-msgstr ""
+msgstr "Introduzca su nombre de usuario"
 
 #: templates/user.html:39
 msgid "Create profile"
-msgstr ""
+msgstr "Crear perfil"
 
 #: templates/user_ratings.html:5
 msgid "Movie Recommendations"
-msgstr ""
+msgstr "Recomendaciones de peliculas"
 
 #: templates/user_ratings.html:14
 msgid "Rated movies"
-msgstr ""
+msgstr "Películas clasificadas"
 
 #: templates/user_ratings.html:18
 msgid "Loading ratings..."
-msgstr ""
-
+msgstr "Cargando calificaciones ..."
