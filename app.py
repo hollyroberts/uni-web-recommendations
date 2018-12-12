@@ -1,5 +1,5 @@
 from flask import Flask, session, render_template, redirect, request, jsonify, abort, send_from_directory, g
-from flask_babel import Babel, gettext
+from flask_babel import Babel, gettext, ngettext
 import os
 from db import Database
 
@@ -101,7 +101,20 @@ def search_movies():
     include_rated_movies = request.args.get('include_rated_movies') == 'true'
     page = int(request.args.get('page', 0))
 
-    results = Database.search_movies(title, session['user']['id'], page, recommend, include_rated_movies)
+    db_result = Database.search_movies(title, session['user']['id'], page, recommend, include_rated_movies)
+    tot_results = db_result['totMovies']
+    starting_movie = db_result['startingMovie']
+    data_length = len(db_result['data'])
+
+    results = {
+        "translations": {
+            "no_results_found": gettext('No results found for "%(search_str)s"', search_str=title),
+            "results_found": ngettext('Showing movies %(start)s-%(end)s out of %(tot_results)s result found',
+                                      'Showing movies %(start)s-%(end)s out of %(tot_results)s results found)',
+                                      tot_results, start=starting_movie + 1, end=starting_movie + data_length, tot_results=tot_results)
+        },
+        "results": db_result
+    }
 
     return jsonify(results)
 

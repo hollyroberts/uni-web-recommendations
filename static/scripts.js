@@ -32,7 +32,10 @@ function searchMovie(page = 0) {
     showSearchHeader();
 
     // Send AJAX request
-    $.get("/search_movies", data, function (data) {
+    $.get("/search_movies", data, function (response) {
+        let server_translations = response['translations'];
+        let data = response['results'];
+
         maxPage = data['maxPages'];
         let totResults = data['totMovies'];
         let startingMovie = data['startingMovie'];
@@ -40,12 +43,12 @@ function searchMovie(page = 0) {
         // Update status
         if (totResults === 0) {
             // TODO
-            changeResultsVisibility(false, "<h4>No results found for \"" + searchStr + "\"</h4>");
+            changeResultsVisibility(false, "<h4>" + server_translations['no_results_found'] + "</h4>");
             return;
         }
 
         // TODO
-        let statusStr = `<p> out of ${totResults}` + (totResults === 1 ? " result" : " results") + " found</p>";
+        let statusStr = "<p>" + server_translations['results_found'] + "</p>";
 
         // Update table
         setTableElements(data['data']);
