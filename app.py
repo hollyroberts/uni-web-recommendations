@@ -69,8 +69,9 @@ def get_reccs():
         return redirect('user.html')
 
     page = int(request.args.get('page', 0))
+    include_rated_movies = request.args.get('include_rated_movies') == 'true'
 
-    return jsonify(Database.get_reccs(session['user']['id'], page))
+    return jsonify(Database.get_reccs(session['user']['id'], page, include_rated_movies))
 
 @app.route("/ratings")
 def get_ratings():

@@ -108,7 +108,13 @@ function fetchRecs(page = 0) {
     displayLoadingMessage();
     showSearchHeader(false);
 
-    $.get("/recommendations", {page: page}, function (data) {
+    let include_rated_movies = $("#remove-rated-checkbox")[0].checked;
+    let data = {
+        page: page,
+        include_rated_movies: include_rated_movies
+    };
+
+    $.get("/recommendations", data, function (data) {
         // Check response metadata
         if (data.hasOwnProperty("noRatings")) {
             changeResultsVisibility(false, "<h4>You haven't rated any movies yet, so no recommendations can be generated</h4>");

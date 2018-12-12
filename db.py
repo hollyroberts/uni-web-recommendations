@@ -74,7 +74,7 @@ class Database:
             }
 
     @classmethod
-    def search_movies(cls, search_str, user_id, page: int = 0, recommend: bool = True):
+    def search_movies(cls, search_str, user_id, page: int = 0, recommend: bool = True, include_rated: bool = False):
         individual_words = list(cls._get_regex_str(word) for word in search_str.split() if word not in cls.COMMON_WORDS)
 
         with sqlite3.connect(cls.DATABASE) as db:
@@ -90,10 +90,17 @@ class Database:
                 word_match_results = db.execute("SELECT id FROM movies WHERE " + query, individual_words)
                 movie_ids.update(x[0] for x in word_match_results.fetchall())
 
+        # Filter out movies we haven't rated
+        movie_ids = list(movie_ids)
+        if not include_rated:
+            movie_ids = cls.filter_movies_to_not_rated(movie_ids, user_id)
+
         # Trim to page
         num_movies = len(movie_ids)
+        if page * cls.MAX_NUMBER_OF_RESULTS >= num_movies:
+            page = num_movies // cls.MAX_NUMBER_OF_RESULTS
         starting_movie = page * cls.MAX_NUMBER_OF_RESULTS
-        movie_ids = list(movie_ids)[starting_movie: starting_movie + cls.MAX_NUMBER_OF_RESULTS]
+        movie_ids = movie_ids[starting_movie: starting_movie + cls.MAX_NUMBER_OF_RESULTS]
 
         if recommend:
             movie_reccs = cls.get_all_user_reccs(user_id)
@@ -147,7 +154,7 @@ class Database:
         ratings_for_user = preds_df.sort_values(by=user_id - 1, ascending=False, axis=1)
         ratings_for_user = ratings_for_user.iloc[user_id - 1:user_id, :]
 
-        return ratings_for_user.columns.values
+        return ratings_for_user.columns.values.tolist()
 
     @classmethod
     def get_movie_ratings_for_user(cls, user_id: int):
@@ -158,16 +165,24 @@ class Database:
         return cls.get_movies(movies_rated, user_id)
 
     @classmethod
-    def get_reccs(cls, user_id: int, page: int = 0):
-        full_reccs = cls.get_all_user_reccs(user_id)
-        if isinstance(full_reccs, dict):
-            return full_reccs
+    def get_reccs(cls, user_id: int, page: int = 0, include_rated: bool = False):
+        reccs = cls.get_all_user_reccs(user_id)
+        if isinstance(reccs, dict):
+            return reccs
 
-        num_movies = len(full_reccs)
+        # Filter out movies we haven't rated
+        if not include_rated:
+            reccs = cls.filter_movies_to_not_rated(reccs, user_id)
+
+        # Make sure that we don't overflow page (eg. if checkbox changed)
+        num_movies = len(reccs)
+        if page * cls.MAX_NUMBER_OF_RESULTS >= num_movies:
+            page = num_movies // cls.MAX_NUMBER_OF_RESULTS
+
         starting_movie = page * cls.MAX_NUMBER_OF_RESULTS
-        page_reccs = full_reccs[starting_movie: starting_movie + cls.MAX_NUMBER_OF_RESULTS]
+        page_reccs = reccs[starting_movie: starting_movie + cls.MAX_NUMBER_OF_RESULTS]
 
-        return cls.get_movies_paginated(page_reccs.tolist(), user_id, num_movies, starting_movie)
+        return cls.get_movies_paginated(page_reccs, user_id, num_movies, starting_movie)
 
     @classmethod
     def get_movies(cls, list_of_ids, user_id):
@@ -193,6 +208,16 @@ class Database:
                 "totMovies": num_movies,
                 "startingMovie": starting_movie,
                 "data": movie_data}
+
+    @classmethod
+    def filter_movies_to_not_rated(cls, list_of_movies, user_id: int):
+        full_ids = set(list_of_movies)
+
+        with sqlite3.connect(cls.DATABASE) as db:
+            movies_rated = db.execute("SELECT movie_id FROM ratings WHERE user_id = ? ORDER BY rating_score DESC", [user_id]).fetchall()
+        rated_ids = set(x[0] for x in movies_rated)
+
+        return list(full_ids & rated_ids)
 
     @classmethod
     def number_of_users(cls):
