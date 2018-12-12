@@ -53,6 +53,8 @@ genre_data = list((index, genre) for (genre, index) in genre_dict.items())
 # Add data to movies, genres, and movie genres
 db.executemany("INSERT INTO movies (id, title) VALUES (?, ?)", movie_data)
 db.executemany("INSERT INTO genres (id, genre) VALUES (?, ?)", genre_data)
+for x in genre_data:
+    print(x[1])
 db.executemany("INSERT INTO movie_genres (movie_id, genre_id) VALUES (?, ?)", movie_genre_data)
 
 # Go through ratings.csv
