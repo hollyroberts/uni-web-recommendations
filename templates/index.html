@@ -4,7 +4,9 @@
     <head>
         <title>{{ ('Movie Recommendations') }}</title>
     </head>
-    <body onload="fetchRecs(0);">
+    {% block onload %}
+            <body onload="fetchTranslations(); fetchRecs(0);">
+    {% endblock %}
 
     <div hidden class="alert alert-success" id="success-alert">
         <button type="button" class="close" data-dismiss="alert">x</button>

@@ -36,7 +36,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">   {{ _('Language') }}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         {% for key, value in g.languages.items() %}
-                                <li><a href="" style="display: inline-block"><img src="/static/flag-{{ key }}.png" width="60" height="40">&nbsp;&nbsp;&nbsp;{{ value }}</a></li>
+                                <li><a href="/change_language?locale={{ key }}" style="display: inline-block"><img src="/static/flag-{{ key }}.png" width="60" height="40">&nbsp;&nbsp;&nbsp;{{ value }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>

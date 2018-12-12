@@ -1,5 +1,5 @@
 from flask import Flask, session, render_template, redirect, request, jsonify, abort, send_from_directory, g
-from flask_babel import Babel
+from flask_babel import Babel, gettext
 import os
 from db import Database
 
@@ -27,11 +27,24 @@ def set_locale():
     g.locale = get_locale()
     g.languages = LANGUAGES
 
-# Routing functions
+# Static routing/translations
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
 
+@app.route("/get_translations")
+def translations():
+    return jsonify({
+        "no_genres": gettext("No genres"),
+        "no_rating": gettext("No rating"),
+        "delete": gettext("Delete"),
+        "have_not_rated": gettext("You haven't rated any movies"),
+        "error_deleting": gettext("Error deleting rating - this should never happen"),
+        "error_rating": gettext("Error updating rating - this should never happen"),
+        "loading_movie": gettext("Loading movies...")
+    })
+
+# HTML pages
 @app.route('/')
 @app.route('/index.html')
 def index_page():
@@ -52,6 +65,7 @@ def user_ratings_page():
 def user_page():
     return render_template('user.html', users=Database.get_users(), max_user_id=Database.number_of_users())
 
+# Commands
 @app.route('/create_user', methods=['POST'])
 def add_user():
     username = request.form['username']
@@ -96,7 +110,14 @@ def get_reccs():
     page = int(request.args.get('page', 0))
     include_rated_movies = request.args.get('include_rated_movies') == 'true'
 
-    return jsonify(Database.get_reccs(session['user']['id'], page, include_rated_movies))
+    result = {
+        "translations": {
+            "no_ratings": gettext("You haven't rated any movies yet, so no recommendations can be generated")
+        },
+        "reccs": Database.get_reccs(session['user']['id'], page, include_rated_movies)
+    }
+
+    return jsonify(result)
 
 @app.route("/ratings")
 def get_ratings():
@@ -115,6 +136,12 @@ def delete_rating():
     Database.delete_rating(user_id, movie_id)
 
     return '', 200
+
+@app.route("/change_language")
+def change_language():
+    session['locale'] = request.args.get('locale')
+
+    return redirect(request.referrer)
 
 @app.route("/update_recommendation", methods=['POST'])
 def update_recc():

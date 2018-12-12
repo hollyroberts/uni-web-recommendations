@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-12-12 18:07+0000\n"
+"POT-Creation-Date: 2018-12-12 19:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,78 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
+
+#: templates/base.html:17
+msgid "Movie recommendations"
+msgstr ""
+
+#: templates/base.html:26
+msgid "User: "
+msgstr ""
+
+#: templates/base.html:28
+msgid "View ratings"
+msgstr ""
+
+#: templates/base.html:30
+msgid "New/change user"
+msgstr ""
+
+#: templates/base.html:31
+msgid "Clear session data"
+msgstr ""
+
+#: templates/base.html:36
+msgid "Language"
+msgstr ""
+
+#: templates/index.html:15
+msgid "Search movies:"
+msgstr ""
+
+#: templates/index.html:17
+msgid "Search for a movie..."
+msgstr ""
+
+#: templates/index.html:19
+msgid "Sort results by those recommended to me"
+msgstr ""
+
+#: templates/index.html:20
+msgid "Include movies that I've rated"
+msgstr ""
+
+#: templates/index.html:26
+msgid "Recommendations"
+msgstr ""
+
+#: templates/index.html:33
+msgid "Search results"
+msgstr ""
+
+#: templates/index.html:38
+msgid "Loading recommendations..."
+msgstr ""
+
+#: templates/index.html:43 templates/user_ratings.html:23
+msgid "Movie"
+msgstr ""
+
+#: templates/index.html:44 templates/user_ratings.html:24
+msgid "Genres"
+msgstr ""
+
+#: templates/index.html:45 templates/user_ratings.html:25
+msgid "Your Rating"
+msgstr ""
+
+#: templates/user.html:5
+msgid "Change user account"
+msgstr ""
+
+#: templates/user.html:8
+msgid "Select account"
+msgstr ""
 
 #: templates/user.html:11
 msgid "Choose user manually created:"
@@ -26,10 +98,40 @@ msgid "Choose user"
 msgstr ""
 
 #: templates/user.html:24
-msgid "OR, enter a user id manually (1 - %(max_id)): "
+#, python-format
+msgid "OR, enter a user id manually (1 - %(max_id)s): "
 msgstr ""
 
 #: templates/user.html:26
-msgid "Enter a user id manually (1 - %(max_id)): "
+#, python-format
+msgid "Enter a user id manually (1 - %(max_id)s): "
+msgstr ""
+
+#: templates/user.html:30
+msgid "Select user"
+msgstr ""
+
+#: templates/user.html:37
+msgid "Username:"
+msgstr ""
+
+#: templates/user.html:38
+msgid "Enter username"
+msgstr ""
+
+#: templates/user.html:39
+msgid "Create profile"
+msgstr ""
+
+#: templates/user_ratings.html:5
+msgid "Movie Recommendations"
+msgstr ""
+
+#: templates/user_ratings.html:14
+msgid "Rated movies"
+msgstr ""
+
+#: templates/user_ratings.html:18
+msgid "Loading ratings..."
 msgstr ""
 

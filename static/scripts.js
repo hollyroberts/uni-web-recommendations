@@ -2,6 +2,14 @@ let maxPage = 0;
 let resultsTypeIsSearch = false;
 let updatePage = 0;
 
+let translations = {};
+
+function fetchTranslations() {
+    $.get("/get_translations", {}, function(data) {
+        translations = data;
+    });
+}
+
 function searchMovie(page = 0) {
     displayLoadingMessage();
 
@@ -30,11 +38,13 @@ function searchMovie(page = 0) {
 
         // Update status
         if (totResults === 0) {
+            // TODO
             changeResultsVisibility(false, "<h4>No results found for \"" + searchStr + "\"</h4>");
             return;
         }
 
-        let statusStr = `<p>Showing movies ${startingMovie + 1}-${startingMovie + data['data'].length} out of ${totResults}` + (totResults === 1 ? " result" : " results") + " found</p>";
+        // TODO
+        let statusStr = `<p> out of ${totResults}` + (totResults === 1 ? " result" : " results") + " found</p>";
 
         // Update table
         setTableElements(data['data']);
@@ -70,14 +80,14 @@ function setTableElements(elements, deleteButton = false) {
 
         // Movie genres
         if (movieGenres.length === 0) {
-            appendStr += "<td>No genres</td>";
+            appendStr += "<td>" + translations['no_genres'] + "</td>";
         } else {
             appendStr += "<td>" + movieGenres.join(", ") + "</td>";
         }
 
         // Rating
-        appendStr += `<td><select class="form-control" onchange="updateRating(${movieId}, '${movieTitle}', this.value);" onfocus="this.selected = 'No rating'">`;
-        appendStr += `<option value="" selected disabled hidden>No rating</option>`;
+        appendStr += `<td><select class="form-control" onchange="updateRating(${movieId}, '${movieTitle}', this.value);" onfocus="this.selected = '${translations['no_rating']}'">`;
+        appendStr += `<option value="" selected disabled hidden>${translations['no_rating']}</option>`;
 
         for (let rating = 0.5; rating <= 5; rating += 0.5) {
             appendStr += '<option value="' + rating + '"';
@@ -92,7 +102,7 @@ function setTableElements(elements, deleteButton = false) {
 
         // Delete button
         if (deleteButton) {
-            appendStr += `<td><button type="button" class="btn btn-danger" onclick="deleteRating(${movieId}, '${movieTitle}');">Delete</button></td>`
+            appendStr += `<td><button type="button" class="btn btn-danger" onclick="deleteRating(${movieId}, '${movieTitle}');">${translations['delete']}</button></td>`
         }
 
         appendStr += "</tr>";
@@ -122,10 +132,13 @@ function fetchRecs(page = 0) {
         include_rated_movies: include_rated_movies
     };
 
-    $.get("/recommendations", data, function (data) {
+    $.get("/recommendations", data, function (response) {
+        let data = response['reccs'];
+        let translations = response['translations'];
+
         // Check response metadata
         if (data.hasOwnProperty("noRatings")) {
-            changeResultsVisibility(false, "<h4>You haven't rated any movies yet, so no recommendations can be generated</h4>");
+            changeResultsVisibility(false, "<h4>" + translations['no_ratings'] + "</h4>");
         }
 
         maxPage = data['maxPages'];
@@ -146,7 +159,7 @@ function fetchRatings() {
         console.log(data);
 
         if (data.length === 0) {
-            changeResultsVisibility(false, "You haven't rated any movies");
+            changeResultsVisibility(false, translations['have_not_rated']);
         } else {
             changeResultsVisibility(true, false);
             setTableElements(data, true);
@@ -164,11 +177,12 @@ function updateRating(movieID, movieTitle, rating) {
     // noinspection JSUnusedLocalSymbols
     $.post("/update_recommendation", postData, function (_, status) {
         if (status !== "success") {
-            alert("Error updating rating - this should never happen");
+            alert(translations['error_rating']);
             return;
         }
 
         let alertContainer = $("#success-alert");
+        // TODO
         $("#alert-text")[0].innerHTML = `Rating for "${movieTitle}" updated to ${rating}/5`;
 
         alertContainer.fadeTo(2500, 500).slideUp(500, function () {
@@ -180,7 +194,7 @@ function updateRating(movieID, movieTitle, rating) {
 function deleteRating(movieID, movieTitle) {
     $.post("/delete_rating", {movie_id: movieID}, function (_, status) {
         if (status !== "success") {
-            alert("Error deleting rating - this should never happen");
+            alert(translations['error_deleting']);
             return;
         }
 
@@ -189,25 +203,23 @@ function deleteRating(movieID, movieTitle) {
             tr.remove();
 
             if ($("#results-table")[0].rows.length <= 1) {
-                console.log("Hello");
-                changeResultsVisibility(false, "You haven't rated any movies");
+                changeResultsVisibility(false, translations['have_not_rated']);
             }
         });
 
         let alertContainer = $("#success-alert");
+        // TODO
         $("#alert-text")[0].innerHTML = `Rating for "${movieTitle}" deleted`;
 
         alertContainer.fadeTo(2500, 500).slideUp(500, function () {
             alertContainer.slideUp(500);
         });
-
-
     })
 }
 
 function displayLoadingMessage() {
     disablePagination();
-    changeResultsVisibility(false, "<p>Loading movies...</p>");
+    changeResultsVisibility(false, "<p>" + translations['loading_movie'] + "</p>");
 }
 
 function disablePagination() {
