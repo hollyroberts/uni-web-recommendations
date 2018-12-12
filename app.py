@@ -61,7 +61,6 @@ def user_ratings_page():
     if 'user' not in session:
         return redirect('user.html')
 
-    Database.get_movie_ratings_for_user(session['user']['id'])
     return render_template('user_ratings.html', session=session)
 
 @app.route('/user.html')
@@ -101,7 +100,7 @@ def search_movies():
     include_rated_movies = request.args.get('include_rated_movies') == 'true'
     page = int(request.args.get('page', 0))
 
-    db_result = Database.search_movies(title, session['user']['id'], page, recommend, include_rated_movies)
+    db_result = Database.search_movies(title, session['user']['id'], g.locale, page, recommend, include_rated_movies)
     tot_results = db_result['totMovies']
     starting_movie = db_result['startingMovie']
     data_length = len(db_result['data'])
@@ -126,14 +125,14 @@ def get_reccs():
     page = int(request.args.get('page', 0))
     include_rated_movies = request.args.get('include_rated_movies') == 'true'
 
-    return jsonify(Database.get_reccs(session['user']['id'], page, include_rated_movies))
+    return jsonify(Database.get_reccs(session['user']['id'], g.locale, page, include_rated_movies))
 
 @app.route("/ratings")
 def get_ratings():
     if 'user' not in session:
         return redirect('user.html')
 
-    return jsonify(Database.get_movie_ratings_for_user(session['user']['id']))
+    return jsonify(Database.get_movie_ratings_for_user(session['user']['id'], g.locale))
 
 @app.route("/delete_rating", methods=['POST'])
 def delete_rating():

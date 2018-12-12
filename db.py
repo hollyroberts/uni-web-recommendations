@@ -74,7 +74,7 @@ class Database:
             }
 
     @classmethod
-    def search_movies(cls, search_str, user_id, page: int = 0, recommend: bool = True, include_rated: bool = False):
+    def search_movies(cls, search_str, user_id, locale: str, page: int = 0, recommend: bool = True, include_rated: bool = False):
         individual_words = list(cls._get_regex_str(word) for word in search_str.split() if word not in cls.COMMON_WORDS)
 
         with sqlite3.connect(cls.DATABASE) as db:
@@ -108,7 +108,7 @@ class Database:
             if not isinstance(movie_reccs, dict):
                 movie_ids = list(int(movie_id) for movie_id in movie_reccs if movie_id in movie_ids)
 
-        return cls.get_movies_paginated(movie_ids, user_id, num_movies, starting_movie)
+        return cls.get_movies_paginated(movie_ids, user_id, num_movies, starting_movie, locale)
 
     @classmethod
     def get_users(cls):
@@ -157,15 +157,15 @@ class Database:
         return ratings_for_user.columns.values.tolist()
 
     @classmethod
-    def get_movie_ratings_for_user(cls, user_id: int):
+    def get_movie_ratings_for_user(cls, user_id: int, locale: str):
         with sqlite3.connect(cls.DATABASE) as db:
             movies_rated = db.execute("SELECT movie_id FROM ratings WHERE user_id = ? ORDER BY rating_score DESC", [user_id]).fetchall()
         movies_rated = list(x[0] for x in movies_rated)
 
-        return cls.get_movies(movies_rated, user_id)
+        return cls.get_movies(movies_rated, user_id, locale)
 
     @classmethod
-    def get_reccs(cls, user_id: int, page: int = 0, include_rated: bool = False):
+    def get_reccs(cls, user_id: int, locale: str, page: int = 0, include_rated: bool = False):
         reccs = cls.get_all_user_reccs(user_id)
         if isinstance(reccs, dict):
             return reccs
@@ -182,14 +182,14 @@ class Database:
         starting_movie = page * cls.MAX_NUMBER_OF_RESULTS
         page_reccs = reccs[starting_movie: starting_movie + cls.MAX_NUMBER_OF_RESULTS]
 
-        return cls.get_movies_paginated(page_reccs, user_id, num_movies, starting_movie)
+        return cls.get_movies_paginated(page_reccs, user_id, num_movies, starting_movie, locale)
 
     @classmethod
-    def get_movies(cls, list_of_ids, user_id):
+    def get_movies(cls, list_of_ids, user_id, locale: str):
         with sqlite3.connect(cls.DATABASE) as db:
             results = db.execute("SELECT * FROM movies WHERE id in " + cls._list_to_sql(list_of_ids))
             movie_data = OrderedDict(results.fetchall())
-            movie_data = cls._add_extra_info(movie_data, user_id)
+            movie_data = cls._add_extra_info(movie_data, user_id, locale)
 
         data_to_send = []
         for movie_id in list_of_ids:
@@ -200,8 +200,8 @@ class Database:
         return data_to_send
 
     @classmethod
-    def get_movies_paginated(cls, list_of_ids, user_id, num_movies, starting_movie):
-        movie_data = cls.get_movies(list_of_ids, user_id)
+    def get_movies_paginated(cls, list_of_ids, user_id, num_movies, starting_movie, locale: str):
+        movie_data = cls.get_movies(list_of_ids, user_id, locale)
         max_pages = math.ceil(num_movies / cls.MAX_NUMBER_OF_RESULTS) - 1
 
         return {"maxPages": max_pages,
@@ -243,10 +243,10 @@ class Database:
         return f"(^|\W){re.escape(string)}($|\W)"
 
     @classmethod
-    def _add_extra_info(cls, movie_data: OrderedDict, user_id: int):
+    def _add_extra_info(cls, movie_data: OrderedDict, user_id: int, locale: str):
         with sqlite3.connect(cls.DATABASE) as db:
             for movie_id in movie_data.keys():
-                sql_query = "SELECT genres.genre FROM movies INNER JOIN movie_genres ON movies.id = movie_genres.movie_id AND movies.id = ? INNER JOIN genres ON genres.id = movie_genres.genre_id"
+                sql_query = f"SELECT genres_{locale}.genre FROM movies INNER JOIN movie_genres ON movies.id = movie_genres.movie_id AND movies.id = ? INNER JOIN genres_{locale} ON genres_{locale}.id = movie_genres.genre_id"
                 genres = list(genre[0] for genre in db.execute(sql_query, (movie_id,)).fetchall())
 
                 rating = db.execute("SELECT rating_score FROM ratings WHERE user_id = ? AND movie_id = ?", (user_id, movie_id)).fetchone()

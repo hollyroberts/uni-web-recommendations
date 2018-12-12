@@ -7,6 +7,8 @@ import os
 import csv
 import sys
 
+from convert_db_genres import translations_es, translations_se
+
 MVLENS_FOLDER = "data"
 
 if os.path.exists("database.db"):
@@ -16,7 +18,10 @@ db = sqlite3.connect("database.db")
 # Create tables
 db.execute("CREATE TABLE users (id INTEGER PRIMARY KEY , name VARCHAR, from_mvl BOOLEAN)")
 db.execute("CREATE TABLE movies (id INTEGER PRIMARY KEY , title VARCHAR)")
-db.execute("CREATE TABLE genres (id INTEGER PRIMARY KEY , genre VARCHAR)")
+
+db.execute("CREATE TABLE genres_en (id INTEGER PRIMARY KEY , genre VARCHAR)")
+db.execute("CREATE TABLE genres_es (id INTEGER PRIMARY KEY , genre VARCHAR)")
+db.execute("CREATE TABLE genres_se (id INTEGER PRIMARY KEY , genre VARCHAR)")
 
 db.execute("CREATE TABLE movie_genres (movie_id INTEGER, genre_id INTEGER)")
 db.execute("CREATE TABLE ratings (user_id INTEGER, movie_id INTEGER, rating_score FLOAT, UNIQUE (user_id, movie_id) ON CONFLICT REPLACE)")
@@ -47,15 +52,17 @@ with open(os.path.join(MVLENS_FOLDER, "movies.csv"), 'r', encoding="UTF-8") as f
             # Add to obj
             movie_genre_data.append((row['movieId'], genre_dict[genre]))
 
-# Invert genres
-genre_data = list((index, genre) for (genre, index) in genre_dict.items())
-
 # Add data to movies, genres, and movie genres
 db.executemany("INSERT INTO movies (id, title) VALUES (?, ?)", movie_data)
-db.executemany("INSERT INTO genres (id, genre) VALUES (?, ?)", genre_data)
-for x in genre_data:
-    print(x[1])
 db.executemany("INSERT INTO movie_genres (movie_id, genre_id) VALUES (?, ?)", movie_genre_data)
+
+# Setup genre table
+genre_data = list((index, genre) for (genre, index) in genre_dict.items())
+db.executemany("INSERT INTO genres_en (id, genre) VALUES (?, ?)", genre_data)
+genre_data_es = list((index, translations_es[genre]) for (index, genre) in genre_data)
+db.executemany("INSERT INTO genres_es (id, genre) VALUES (?, ?)", genre_data_es)
+genre_data_se = list((index, translations_se[genre]) for (index, genre) in genre_data)
+db.executemany("INSERT INTO genres_se (id, genre) VALUES (?, ?)", genre_data_se)
 
 # Go through ratings.csv
 with open(os.path.join(MVLENS_FOLDER, "ratings.csv"), 'r', encoding="UTF-8") as file:

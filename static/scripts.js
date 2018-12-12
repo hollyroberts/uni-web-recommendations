@@ -42,12 +42,10 @@ function searchMovie(page = 0) {
 
         // Update status
         if (totResults === 0) {
-            // TODO
             changeResultsVisibility(false, "<h4>" + server_translations['no_results_found'] + "</h4>");
             return;
         }
 
-        // TODO
         let statusStr = "<p>" + server_translations['results_found'] + "</p>";
 
         // Update table
