@@ -101,7 +101,7 @@ class Database:
             if not isinstance(movie_reccs, dict):
                 movie_ids = list(int(movie_id) for movie_id in movie_reccs if movie_id in movie_ids)
 
-        return cls.get_movies(movie_ids, user_id, num_movies, starting_movie)
+        return cls.get_movies_paginated(movie_ids, user_id, num_movies, starting_movie)
 
     @classmethod
     def get_users(cls):
@@ -150,6 +150,14 @@ class Database:
         return ratings_for_user.columns.values
 
     @classmethod
+    def get_movie_ratings_for_user(cls, user_id: int):
+        with sqlite3.connect(cls.DATABASE) as db:
+            movies_rated = db.execute("SELECT movie_id FROM ratings WHERE user_id = ?", [user_id]).fetchall()
+        movies_rated = list(x[0] for x in movies_rated)
+
+        return cls.get_movies_paginated(movies_rated, user_id)
+
+    @classmethod
     def get_reccs(cls, user_id: int, page: int = 0):
         full_reccs = cls.get_all_user_reccs(user_id)
         if isinstance(full_reccs, dict):
@@ -159,10 +167,10 @@ class Database:
         starting_movie = page * cls.MAX_NUMBER_OF_RESULTS
         page_reccs = full_reccs[starting_movie: starting_movie + cls.MAX_NUMBER_OF_RESULTS]
 
-        return cls.get_movies(page_reccs.tolist(), user_id, num_movies, starting_movie)
+        return cls.get_movies_paginated(page_reccs.tolist(), user_id, num_movies, starting_movie)
 
     @classmethod
-    def get_movies(cls, list_of_ids, user_id, num_movies, starting_movie):
+    def get_movies(cls, list_of_ids, user_id):
         with sqlite3.connect(cls.DATABASE) as db:
             results = db.execute("SELECT * FROM movies WHERE id in " + cls._list_to_sql(list_of_ids))
             movie_data = OrderedDict(results.fetchall())
@@ -174,12 +182,17 @@ class Database:
             item.extend(movie_data[movie_id])
             data_to_send.append(item)
 
+        return data_to_send
+
+    @classmethod
+    def get_movies_paginated(cls, list_of_ids, user_id, num_movies, starting_movie):
+        movie_data = cls.get_movies(list_of_ids, user_id)
         max_pages = math.ceil(num_movies / cls.MAX_NUMBER_OF_RESULTS) - 1
 
         return {"maxPages": max_pages,
                 "totMovies": num_movies,
                 "startingMovie": starting_movie,
-                "data": data_to_send}
+                "data": movie_data}
 
     @classmethod
     def number_of_users(cls):

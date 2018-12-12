@@ -10,11 +10,19 @@ def favicon():
 
 @app.route('/')
 @app.route('/index.html')
-def index():
+def index_page():
     if 'user' not in session:
         return redirect('user.html')
 
     return render_template('index.html', session=session)
+
+@app.route('/user_ratings.html')
+def user_ratings_page():
+    if 'user' not in session:
+        return redirect('user.html')
+
+    Database.get_movie_ratings_for_user(session['user']['id'])
+    return render_template('user_ratings.html', session=session)
 
 @app.route('/user.html')
 def user_page():
