@@ -211,13 +211,11 @@ class Database:
 
     @classmethod
     def filter_movies_to_not_rated(cls, list_of_movies, user_id: int):
-        full_ids = set(list_of_movies)
-
         with sqlite3.connect(cls.DATABASE) as db:
             movies_rated = db.execute("SELECT movie_id FROM ratings WHERE user_id = ? ORDER BY rating_score DESC", [user_id]).fetchall()
         rated_ids = set(x[0] for x in movies_rated)
 
-        return list(full_ids & rated_ids)
+        return list(x for x in list_of_movies if x not in rated_ids)
 
     @classmethod
     def number_of_users(cls):

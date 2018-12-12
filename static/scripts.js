@@ -1,4 +1,6 @@
 let maxPage = 0;
+let resultsTypeIsSearch = false;
+let updatePage = 0;
 
 function searchMovie(page = 0) {
     displayLoadingMessage();
@@ -9,10 +11,12 @@ function searchMovie(page = 0) {
         return;
     }
     let recommend = $("#recommend-search-checkbox")[0].checked;
+    let include_rated_movies = $("#remove-rated-checkbox")[0].checked;
 
     let data = {
         title: searchStr,
         recommend: recommend,
+        include_rated_movies: include_rated_movies,
         page: page
     };
 
@@ -35,7 +39,11 @@ function searchMovie(page = 0) {
         // Update table
         setTableElements(data['data']);
         changeResultsVisibility(true, statusStr);
-        showPagination("searchMovie", page, maxPage)
+        showPagination("searchMovie", page, maxPage);
+
+        // Update settings change
+        resultsTypeIsSearch = true;
+        updatePage = page;
     });
 }
 
@@ -126,6 +134,10 @@ function fetchRecs(page = 0) {
         setTableElements(data['data']);
         changeResultsVisibility(true, false);
         showPagination("fetchRecs", page, maxPage);
+
+        // Update settings change
+        resultsTypeIsSearch = false;
+        updatePage = page;
     });
 }
 
@@ -224,6 +236,18 @@ function showPagination(updateFunction, curPage, maxPage) {
 
 
     $("#pagination")[0].innerHTML = htmlStr;
+}
+
+function updateSearchSettings(recommend) {
+    if (recommend && !resultsTypeIsSearch) {
+        return;
+    }
+
+    if (resultsTypeIsSearch) {
+        searchMovie(updatePage);
+    } else {
+        fetchRecs(updatePage);
+    }
 }
 
 function showSearchHeader(bool = true) {
