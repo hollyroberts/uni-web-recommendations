@@ -79,6 +79,17 @@ def get_ratings():
 
     return jsonify(Database.get_movie_ratings_for_user(session['user']['id']))
 
+@app.route("/delete_rating", methods=['POST'])
+def delete_rating():
+    if 'user' not in session:
+        return redirect('user.html')
+
+    user_id = session['user']['id']
+    movie_id = int(request.form['movie_id'])
+
+    print(movie_id)
+    return '', 200
+
 @app.route("/update_recommendation", methods=['POST'])
 def update_recc():
     if 'user' not in session:

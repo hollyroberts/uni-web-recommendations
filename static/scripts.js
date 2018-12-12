@@ -57,7 +57,7 @@ function setTableElements(elements, deleteButton = false) {
         let movieRating = movieData[3];
 
         // Movie title
-        let appendStr = "<tr>";
+        let appendStr = "<tr id=table-entry-" + movieId + ">";
         appendStr += "<td>" + movieTitle + "</td>";
 
         // Movie genres
@@ -84,7 +84,7 @@ function setTableElements(elements, deleteButton = false) {
 
         // Delete button
         if (deleteButton) {
-            appendStr += `<td><button type="button" class="btn btn-danger">Delete</button></td>`
+            appendStr += `<td><button type="button" class="btn btn-danger" onclick="deleteRating(${movieId}, '${movieTitle}');">Delete</button></td>`
         }
 
         appendStr += "</tr>";
@@ -152,6 +152,29 @@ function updateRating(movieID, movieTitle, rating) {
             alertContainer.slideUp(500);
         });
     });
+}
+
+function deleteRating(movieID, movieTitle) {
+    $.post("/delete_rating", {movie_id: movieID}, function (_, status) {
+        console.log(status);
+
+        if (status !== "success") {
+            alert("Error deleting rating - this should never happen");
+            return;
+        }
+
+        let tr = $("#table-entry-" + movieID);
+        tr.fadeOut(300, function() {
+            tr.remove();
+        });
+
+        let alertContainer = $("#success-alert");
+        $("#alert-text")[0].innerHTML = `Rating for "${movieTitle}" deleted`;
+
+        alertContainer.fadeTo(2500, 500).slideUp(500, function () {
+            alertContainer.slideUp(500);
+        });
+    })
 }
 
 function displayLoadingMessage() {
