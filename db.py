@@ -155,7 +155,7 @@ class Database:
             movies_rated = db.execute("SELECT movie_id FROM ratings WHERE user_id = ?", [user_id]).fetchall()
         movies_rated = list(x[0] for x in movies_rated)
 
-        return cls.get_movies_paginated(movies_rated, user_id)
+        return cls.get_movies(movies_rated, user_id)
 
     @classmethod
     def get_reccs(cls, user_id: int, page: int = 0):

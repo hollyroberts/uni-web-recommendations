@@ -43,7 +43,7 @@ function back() {
     fetchRecs(0);
 }
 
-function setTableElements(elements) {
+function setTableElements(elements, deleteButton = false) {
     let table = $("#results-table");
 
     // Clear existing table data
@@ -67,6 +67,7 @@ function setTableElements(elements) {
             appendStr += "<td>" + movieGenres.join(", ") + "</td>";
         }
 
+        // Rating
         appendStr += `<td><select class="form-control" onchange="updateRating(${movieId}, '${movieTitle}', this.value);" onfocus="this.selected = 'No rating'">`;
         appendStr += `<option value="" selected disabled hidden>No rating</option>`;
 
@@ -79,10 +80,14 @@ function setTableElements(elements) {
 
             appendStr += '>' + rating + '</option>';
         }
-
         appendStr += String.raw`</select></td>`;
-        appendStr += "</tr>";
 
+        // Delete button
+        if (deleteButton) {
+            appendStr += `<td><button type="button" class="btn btn-danger">Delete</button></td>`
+        }
+
+        appendStr += "</tr>";
         table.append(appendStr);
     }
 }
@@ -115,6 +120,14 @@ function fetchRecs(page = 0) {
         setTableElements(data['data']);
         changeResultsVisibility(true, false);
         showPagination("fetchRecs", page, maxPage);
+    });
+}
+
+function fetchRatings() {
+    $.get("/ratings", undefined, function(data) {
+        console.log(data);
+        changeResultsVisibility(true, false);
+        setTableElements(data, true);
     });
 }
 

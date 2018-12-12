@@ -72,6 +72,13 @@ def get_reccs():
 
     return jsonify(Database.get_reccs(session['user']['id'], page))
 
+@app.route("/ratings")
+def get_ratings():
+    if 'user' not in session:
+        return redirect('user.html')
+
+    return jsonify(Database.get_movie_ratings_for_user(session['user']['id']))
+
 @app.route("/update_recommendation", methods=['POST'])
 def update_recc():
     if 'user' not in session:
