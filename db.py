@@ -152,7 +152,7 @@ class Database:
     @classmethod
     def get_movie_ratings_for_user(cls, user_id: int):
         with sqlite3.connect(cls.DATABASE) as db:
-            movies_rated = db.execute("SELECT movie_id FROM ratings WHERE user_id = ?", [user_id]).fetchall()
+            movies_rated = db.execute("SELECT movie_id FROM ratings WHERE user_id = ? ORDER BY rating_score DESC", [user_id]).fetchall()
         movies_rated = list(x[0] for x in movies_rated)
 
         return cls.get_movies(movies_rated, user_id)
