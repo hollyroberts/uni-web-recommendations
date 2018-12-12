@@ -86,8 +86,8 @@ def delete_rating():
 
     user_id = session['user']['id']
     movie_id = int(request.form['movie_id'])
+    Database.delete_rating(user_id, movie_id)
 
-    print(movie_id)
     return '', 200
 
 @app.route("/update_recommendation", methods=['POST'])

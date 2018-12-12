@@ -209,6 +209,11 @@ class Database:
             else:
                 db.execute("INSERT INTO ratings (user_id, movie_id, rating_score) VALUES (?, ?, ?)", (user_id, movie_id, rating))
 
+    @classmethod
+    def delete_rating(cls, user_id: int, movie_id: int):
+        with sqlite3.connect(cls.DATABASE) as db:
+            db.execute("DELETE FROM ratings WHERE user_id = ? AND movie_id = ?", (user_id, movie_id))
+
     # Private functions
     @classmethod
     def _get_regex_str(cls, string: str):
