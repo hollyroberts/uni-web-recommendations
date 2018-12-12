@@ -126,8 +126,13 @@ function fetchRecs(page = 0) {
 function fetchRatings() {
     $.get("/ratings", undefined, function(data) {
         console.log(data);
-        changeResultsVisibility(true, false);
-        setTableElements(data, true);
+
+        if (data.length === 0) {
+            changeResultsVisibility(false, "You haven't rated any movies");
+        } else {
+            changeResultsVisibility(true, false);
+            setTableElements(data, true);
+        }
     });
 }
 
@@ -156,16 +161,19 @@ function updateRating(movieID, movieTitle, rating) {
 
 function deleteRating(movieID, movieTitle) {
     $.post("/delete_rating", {movie_id: movieID}, function (_, status) {
-        console.log(status);
-
         if (status !== "success") {
             alert("Error deleting rating - this should never happen");
             return;
         }
 
         let tr = $("#table-entry-" + movieID);
-        tr.fadeOut(300, function() {
+        tr.fadeOut(300, function () {
             tr.remove();
+
+            if ($("#results-table")[0].rows.length <= 1) {
+                console.log("Hello");
+                changeResultsVisibility(false, "You haven't rated any movies");
+            }
         });
 
         let alertContainer = $("#success-alert");
@@ -174,6 +182,8 @@ function deleteRating(movieID, movieTitle) {
         alertContainer.fadeTo(2500, 500).slideUp(500, function () {
             alertContainer.slideUp(500);
         });
+
+
     })
 }
 
