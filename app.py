@@ -3,6 +3,8 @@ from flask_babel import Babel, gettext, ngettext
 import os
 from db import Database
 
+CLEAR_SESSIONS_WHEN_SERVER_RESTARTED = False
+
 app = Flask(__name__, static_url_path='/static')
 babel = Babel(app)
 
@@ -26,6 +28,11 @@ def get_locale():
 def set_locale():
     g.locale = get_locale()
     g.languages = LANGUAGES
+
+@app.before_first_request
+def before_first_request():
+    if CLEAR_SESSIONS_WHEN_SERVER_RESTARTED:
+        session.clear()
 
 # Static routing/translations
 @app.route('/favicon.ico')
